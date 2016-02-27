@@ -36,8 +36,6 @@ const chartData = [
   }
 ];
 
-const xLabels = ['0','1'];
-
 class Message extends React.Component{
 
   static propTypes = {
@@ -58,15 +56,16 @@ class Message extends React.Component{
     return (
       <View style={styles.container}>
         <View style={styles.stats}>
-        <View style={styles.timeContainer}>
-          <Text style={styles.timestamp}>
-            Feb. 23, 2016 @ 12:01 PM
-          </Text>
-        </View>
+          <View style={styles.timeContainer}>
+            <Text style={styles.timestamp}>
+              Feb. 23, 2016 @ 12:01 PM
+            </Text>
+          </View>
           <View style={styles.chartContainer}>
             <RNChart 
               style={styles.chart}
               chartData={chartData}
+              xLabels={['0','1']}
              />
              <View style={styles.overlay}>
              </View>

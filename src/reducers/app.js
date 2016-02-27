@@ -35,15 +35,12 @@ export default function app(state = initialState, action) {
     case types.UPDATE_MESSAGE:
 
       messages = _.map(messages, (message, key) => {
-        console.log(key === action.message.key);
         if (key === action.message.key) {
           return action.message;
         } else {
           return message;
         }
       });
-
-      console.log(messages);
 
       return Object.assign({}, state, {
         messages: messages,

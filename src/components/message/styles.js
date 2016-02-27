@@ -19,11 +19,10 @@ let Styles = StyleSheet.create({
     backgroundColor: WHITE,
     height: SCREEN_HEIGHT,
     width: SCREEN_WIDTH,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   stats: {
     top: Y_OFFSET,
+    left: X_OFFSET,
     height: 60,
     width: SCREEN_WIDTH - (X_OFFSET * 2),
     justifyContent: 'center',
