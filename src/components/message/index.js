@@ -59,6 +59,7 @@ class Message extends React.Component{
 
   render() {
     let message = this.props.message;
+    console.log(message);
 
     return (
       <View style={styles.container}>

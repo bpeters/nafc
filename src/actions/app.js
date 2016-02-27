@@ -91,7 +91,10 @@ export function analyzeMessage(text) {
         }),
       });
 
+      weights = [];
+
       keywords = _.map(JSON.parse(keywords._bodyText).results, (value, key) => {
+        weights.push(value);
         return key;
       });
 
@@ -104,16 +107,25 @@ export function analyzeMessage(text) {
 
       kewordSentiment = JSON.parse(kewordSentiment._bodyText).results;
 
+      sentiments = [];
+
       keywords = _.map(keywords, (keyword, key) => {
+        sentiments.push(kewordSentiment[key]);
         return {
           text: keyword,
           sentiment: kewordSentiment[key],
         };
       });
 
+      let average = _.map(weights, (weight, key) => {
+        return weight * sentiments[key];
+      })
+
+      let score = _.sum(sentiments)/sentiments.length;
+
       dispatch({
         type: types.ANALYZE_MESSAGE,
-        sentiment: sentiment,
+        sentiment: score,
         keywords: keywords,
       });
 
