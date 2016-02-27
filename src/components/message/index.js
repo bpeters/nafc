@@ -50,14 +50,20 @@ class Message extends React.Component{
     };
   }
 
+  componentDidMount() {
+    if (this._textInput) {
+      this._textInput.focus();
+    }
+  }
+
   render() {
     let message = this.props.message;
 
     return (
       <View style={styles.container}>
         <StatBar 
-        	timestamp={TIMESTAMP}
-        	score={SCORE}
+          timestamp={TIMESTAMP}
+          score={SCORE}
         />
         <ScrollView
           style={styles.scrollView}
@@ -87,6 +93,7 @@ class Message extends React.Component{
         autoCorrect={true}
         multiline={true}
         placeholderTextColor={GRAY}
+        editable={this.props.editable}
       />
     );
   }

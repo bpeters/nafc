@@ -31,6 +31,7 @@ export default function app(state = initialState, action) {
 
       return Object.assign({}, state, {
         messages: messages,
+        index: messages.length - 1,
       });
 
     case types.UPDATE_MESSAGE:

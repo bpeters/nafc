@@ -26,7 +26,9 @@ class Message extends React.Component{
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      editable: true,
+    };
   }
 
   render() {
@@ -35,6 +37,7 @@ class Message extends React.Component{
         <MessageComponent
           key={key}
           message={message}
+          editable={this.state.editable}
         />
       );
     });
@@ -47,6 +50,7 @@ class Message extends React.Component{
         showsPagination={false}
         autoplay={false}
         autoplayDirection={false}
+        onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
         onMomentumScrollEnd={this._onMomentumScrollEnd.bind(this)}
       >
         {messages}
@@ -54,9 +58,17 @@ class Message extends React.Component{
     );
   }
 
+  _onScrollBeginDrag(e, state, context) {
+    this.setState({
+      editable: false,
+    });
+  }
+
   _onMomentumScrollEnd(e, state, context) {
-    console.log(state);
     this.props.dispatch(paginateMessages(state.index));
+    this.setState({
+      editable: true,
+    });
   }
 
 }
