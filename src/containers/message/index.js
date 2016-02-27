@@ -30,10 +30,7 @@ class Message extends React.Component{
   }
 
   render() {
-
     let messages = _.map(this.props.messages, (message, key) => {
-      message.key = key;
-
       return (
         <MessageComponent
           key={key}
@@ -44,11 +41,13 @@ class Message extends React.Component{
 
     return (
       <Swiper
+        index={this.props.index}
+        loop={false}
         showsButtons={false}
         showsPagination={false}
         autoplay={false}
         autoplayDirection={false}
-        onMomentumScrollEnd={this._onMomentumScrollEnd}
+        onMomentumScrollEnd={this._onMomentumScrollEnd.bind(this)}
       >
         {messages}
       </Swiper>
@@ -57,12 +56,14 @@ class Message extends React.Component{
 
   _onMomentumScrollEnd(e, state, context) {
     console.log(state);
+    this.props.dispatch(paginateMessages(state.index));
   }
 
 }
 
 function select(state) {
   return {
+    index: state.app.index,
     messages: state.app.messages,
   };
 }

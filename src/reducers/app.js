@@ -35,20 +35,15 @@ export default function app(state = initialState, action) {
 
     case types.UPDATE_MESSAGE:
 
-      messages = messages[0] = action.message;
-
-      console.log(messages);
+      messages[state.index] = action.message;
 
       return Object.assign({}, state, {
         messages: messages,
       });
 
     case types.PAGINATE_MESSAGES:
-
-      messages.push(_.cloneDeep(newMessage));
-
       return Object.assign({}, state, {
-        messages: messages,
+        index: action.index,
       });
 
     case types.LOADING:

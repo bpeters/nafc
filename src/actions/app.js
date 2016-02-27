@@ -17,7 +17,7 @@ export function paginateMessages(index) {
   };
 }
 
-export function updateMessage(key, text) {
+export function updateMessage(text) {
   return async dispatch => {
 
     try {
@@ -67,7 +67,6 @@ export function updateMessage(key, text) {
       dispatch({
         type: types.UPDATE_MESSAGE,
         message: {
-          key: key,
           text: text,
         },
       });

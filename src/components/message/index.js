@@ -2,9 +2,18 @@ import React from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import styles from './styles.js';
+import StatBar from '../../components/stat-bar';
 
-import StatBar from '../stat-bar';
+import {
+  INPUT_DEFAULT
+} from '../../constants/strings';
+
+import {
+  newMessage,
+  updateMessage,
+} from '../../actions/app';
+
+import styles from './styles.js';
 
 import {
   GRAY,
@@ -24,23 +33,26 @@ let {
 
 
 const TIMESTAMP = 'FEB. 23, 2016 @ 12:06 PM';
-const SCORE = 65;
+const SCORE = 10;
 
 
 class Message extends React.Component{
 
-  static propTypes = {};
+  static propTypes = {
+    message: PropTypes.object.isRequired,
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
       isEdit: false,
-      sentiment: null,
     };
   }
 
   render() {
+    let message = this.props.message;
+
     return (
       <View style={styles.container}>
         <StatBar 
@@ -54,20 +66,21 @@ class Message extends React.Component{
           onKeyboardWillHide={this._onKeyboardWillHide.bind(this)}
           onKeyboardWillShow={this._onKeyboardWillShow.bind(this)}
         >
-          {this.state.isEdit || (!this.state.isEdit && !this.props.message.text) ? this._renderTextInput() : this._renderText()}
+          {this.state.isEdit || (!this.state.isEdit && !message.text) ? this._renderTextInput(message.text) : this._renderText(message.text)}
         </ScrollView>
-        {!this.state.isEdit && this.props.message.text ? this._renderButtons() : null}
+        {!this.state.isEdit && message.text ? this._renderButtons() : null}
       </View>
     );
   }
 
-  _renderTextInput() {
+  _renderTextInput(text) {
     return (
       <TextInput
+        ref={(textInput) => this._textInput = textInput}
         style={styles.textInput}
         placeholder={INPUT_DEFAULT}
         onChangeText={this._onChangeText.bind(this)}
-        value={this.props.message.text}
+        value={text}
         autoFocus={false}
         returnKeyType='default'
         blurOnSubmit={false}
@@ -78,11 +91,11 @@ class Message extends React.Component{
     );
   }
 
-  _renderText() {
+  _renderText(text) {
     return (
       <View style={styles.textContainer}>
         <Text style={styles.text}>
-          {this.props.message.text}
+          {text}
         </Text>
       </View>
     );
@@ -91,14 +104,40 @@ class Message extends React.Component{
   _renderButtons() {
     return (
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={this._onEdit.bind(this)}
-        >
-          <Text style={styles.button}>
-            Edit
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.button}>
+          <TouchableOpacity
+            onPress={this._onEdit.bind(this)}
+          >
+            <Text style={styles.buttonText}>
+              Edit
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.button}>
+          <TouchableOpacity
+            onPress={this._onSend.bind(this)}
+          >
+            <Text style={styles.buttonText}>
+              Send
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.button}>
+          <TouchableOpacity
+            onPress={this._onNew.bind(this)}
+          >
+            <Text style={styles.buttonText}>
+              New
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
+    );
+  }
+
+  _onChangeText(text) {
+    this.props.dispatch(
+      updateMessage(text)
     );
   }
 
@@ -106,6 +145,16 @@ class Message extends React.Component{
     this.setState({
       isEdit: true
     });
+
+    this._textInput.focus();
+  }
+
+  _onSend() {
+    console.log('send');
+  }
+
+  _onNew() {
+    this.props.dispatch(newMessage());
   }
 
   _onKeyboardWillShow() {
@@ -118,14 +167,6 @@ class Message extends React.Component{
     this.setState({
       isEdit: false
     });
-  }
-
-  _onChangeText(text) {
-    if (text) {
-      this.props.dispatch(
-        updateMessage(this.props.message.key, text)
-      );
-    }
   }
 }
 
