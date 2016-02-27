@@ -14,6 +14,7 @@ import {
   updateMessage,
   analyzeMessage,
   removeMessage,
+  getReplacements,
 } from '../../actions/app';
 
 import styles from './styles.js';
@@ -252,6 +253,7 @@ class Message extends React.Component{
   }
 
   _onWordPress(match) {
+  	this.props.dispatch(getReplacements(match.text));
     this.setState({
       showReplacement: true,
       match: match,

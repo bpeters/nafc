@@ -65,6 +65,79 @@ export function updateMessage(text) {
   };
 }
 
+export function getReplacements(text) {
+  return async dispatch => {
+
+    dispatch({
+      type: types.LOADING,
+      loading: true,
+    });
+
+    try {
+
+      let thesaurus = await fetch(`http://words.bighugelabs.com/api/2/899ba2d37f3a99c8e40440e13a0c7d8f/${text}/json`, {
+        method: 'GET',
+      },);
+
+      let words = [];
+
+      if(thesaurus._bodyText){
+
+        let object = JSON.parse(thesaurus._bodyText);
+
+        let obj = _.forEach(object, (value, key) => {
+          let int = _.forEach(value, (v, k) => {
+            if(k === 'syn' || k === 'sim'){
+              let vals = _.forEach(v, (val, ke) => {
+                words.push(val)
+              })
+            }
+          })
+        })
+      } 
+
+      console.log(words);
+
+      // let kewordSentiment = await fetch(`https://apiv2.indico.io/sentimenthq/batch?key=${INDICO_KEY}`, {
+      //   method: 'POST',
+      //   body: JSON.stringify({
+      //     data : the
+      //   }),
+      // });
+
+      // kewordSentiment = JSON.parse(kewordSentiment._bodyText).results;
+
+      // sentiments = [];
+
+      // keywords = _.map(keywords, (keyword, key) => {
+      //   sentiments.push(kewordSentiment[key]);
+      //   return {
+      //     text: keyword,
+      //     sentiment: kewordSentiment[key],
+      //   };
+      // });
+
+      // let average = _.map(weights, (weight, key) => {
+      //   return weight * sentiments[key];
+      // })
+
+      // let score = _.sum(sentiments)/sentiments.length;
+
+      // dispatch({
+      //   type: types.ANALYZE_MESSAGE,
+      //   sentiment: score,
+      //   keywords: keywords,
+      // });
+
+      
+
+      // console.log(JSON.parse(thesaurus._bodyText));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+}
+
 export function analyzeMessage(text) {
   return async dispatch => {
 
