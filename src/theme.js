@@ -8,6 +8,7 @@ let {
 
 export const WHITE = '#FFFFFF';
 export const GRAY = '#A5A3A3';
+export const LIGHT_GRAY = '#D9D5D5';
 export const BLACK = '#363532';
 export const YELLOW = '#94ED33';
 export const PURPLE = '#8F1D9D';
