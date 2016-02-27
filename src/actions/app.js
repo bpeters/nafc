@@ -8,6 +8,15 @@ export function newMessage() {
   };
 }
 
+export function paginateMessages(index) {
+  return dispatch => {
+    dispatch({
+      type: types.PAGINATE_MESSAGES,
+      index: index,
+    });
+  };
+}
+
 export function updateMessage(key, text) {
   return async dispatch => {
 

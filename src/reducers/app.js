@@ -13,6 +13,7 @@ const newMessage = {
 };
 
 const initialState = {
+  index: 0,
   messages: [_.cloneDeep(newMessage)],
   loading: false,
   success: false,
@@ -34,13 +35,17 @@ export default function app(state = initialState, action) {
 
     case types.UPDATE_MESSAGE:
 
-      messages = _.map(messages, (message, key) => {
-        if (key === action.message.key) {
-          return action.message;
-        } else {
-          return message;
-        }
+      messages = messages[0] = action.message;
+
+      console.log(messages);
+
+      return Object.assign({}, state, {
+        messages: messages,
       });
+
+    case types.PAGINATE_MESSAGES:
+
+      messages.push(_.cloneDeep(newMessage));
 
       return Object.assign({}, state, {
         messages: messages,

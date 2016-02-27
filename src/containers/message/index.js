@@ -5,6 +5,10 @@ import Swiper from 'react-native-swiper'
 
 import MessageComponent from '../../components/message';
 
+import {
+  paginateMessages,
+} from '../../actions/app';
+
 import styles from './styles.js';
 
 let {
@@ -27,8 +31,6 @@ class Message extends React.Component{
 
   render() {
 
-    console.log(this.props.messages);
-
     let messages = _.map(this.props.messages, (message, key) => {
       message.key = key;
 
@@ -43,10 +45,18 @@ class Message extends React.Component{
     return (
       <Swiper
         showsButtons={false}
+        showsPagination={false}
+        autoplay={false}
+        autoplayDirection={false}
+        onMomentumScrollEnd={this._onMomentumScrollEnd}
       >
         {messages}
       </Swiper>
     );
+  }
+
+  _onMomentumScrollEnd(e, state, context) {
+    console.log(state);
   }
 
 }

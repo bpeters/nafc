@@ -46,8 +46,7 @@ class Message extends React.Component{
     super(props);
 
     this.state = {
-      text: this.props.message.text,
-      isEdit: true,
+      isEdit: false,
       sentiment: null,
     };
   }
@@ -72,16 +71,15 @@ class Message extends React.Component{
           </View>
         </View>
         <ScrollView
-          ref={(scrollView) => { this._scrollView = scrollView; }}
           style={styles.scrollView}
           keyboardShouldPersistTaps={false}
           keyboardDismissMode='interactive'
           onKeyboardWillHide={this._onKeyboardWillHide.bind(this)}
           onKeyboardWillShow={this._onKeyboardWillShow.bind(this)}
         >
-          {this.state.isEdit || (!this.state.isEdit && !this.state.text) ? this._renderTextInput() : this._renderText()}
+          {this.state.isEdit || (!this.state.isEdit && !this.props.message.text) ? this._renderTextInput() : this._renderText()}
         </ScrollView>
-        {!this.state.isEdit && this.state.text ? this._renderButtons() : null}
+        {!this.state.isEdit && this.props.message.text ? this._renderButtons() : null}
       </View>
     );
   }
@@ -91,10 +89,9 @@ class Message extends React.Component{
       <TextInput
         style={styles.textInput}
         placeholder={INPUT_DEFAULT}
-        ref='textInput'
         onChangeText={this._onChangeText.bind(this)}
-        value={this.state.text}
-        autoFocus={true}
+        value={this.props.message.text}
+        autoFocus={false}
         returnKeyType='default'
         blurOnSubmit={false}
         autoCorrect={true}
@@ -108,7 +105,7 @@ class Message extends React.Component{
     return (
       <View style={styles.textContainer}>
         <Text style={styles.text}>
-          {this.state.text}
+          {this.props.message.text}
         </Text>
       </View>
     );
@@ -172,18 +169,14 @@ class Message extends React.Component{
     this.setState({
       isEdit: false
     });
-
-    if (this.state.text) {
-      this.props.dispatch(
-        updateMessage(this.props.message.key, this.state.text)
-      );
-    }
   }
 
   _onChangeText(text) {
-    this.setState({
-      text: text
-    });
+    if (text) {
+      this.props.dispatch(
+        updateMessage(this.props.message.key, text)
+      );
+    }
   }
 
 }

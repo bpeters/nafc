@@ -58,12 +58,6 @@ let Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  triangle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'red'
-  },
   scrollView: {
     top: Y_OFFSET,
     left: X_OFFSET,
@@ -78,7 +72,7 @@ let Styles = StyleSheet.create({
   },
   textContainer: {
     width: SCREEN_WIDTH - (X_OFFSET * 2),
-    paddingTop: 5,
+    paddingTop: 4,
   },
   text: {
     color: BLACK,
