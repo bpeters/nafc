@@ -1,20 +1,24 @@
 import * as types from '../constants/action-types';
 import _ from 'lodash';
+import moment from 'moment';
 
 import {
   ERROR_DEFAULT
 } from '../constants/strings';
 
-const newMessage = {
-  text: null,
-  didSend: false,
-  sentiment: null,
-  keywords: null,
+function newMessage() {
+  return {
+    text: null,
+    timestamp: moment.now(),
+    didSend: false,
+    sentiment: null,
+    keywords: null,
+  };
 };
 
 const initialState = {
   index: 0,
-  messages: [_.cloneDeep(newMessage)],
+  messages: [newMessage()],
   loading: false,
   success: false,
   error: null,
@@ -27,7 +31,7 @@ export default function app(state = initialState, action) {
 
     case types.NEW_MESSAGE:
 
-      messages.push(_.cloneDeep(newMessage));
+      messages.push(newMessage());
 
       return Object.assign({}, state, {
         messages: messages,

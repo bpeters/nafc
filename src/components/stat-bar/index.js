@@ -1,6 +1,7 @@
 import React from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import moment from 'moment';
 
 import styles from './styles.js';
 
@@ -23,7 +24,9 @@ import RNChart from 'react-native-chart';
 
 class StatBar extends React.Component{
 
-  static propTypes = {};
+  static propTypes = {
+    timestamp: PropTypes.number.isRequired,
+  };
 
   constructor(props) {
     super(props);
@@ -65,7 +68,7 @@ class StatBar extends React.Component{
       <View style={styles.stats}>
         <View style={styles.timeContainer}>
           <Text style={styles.timestamp}>
-            {this.props.timestamp}
+            {moment(this.props.timestamp).format("MMM. D, YYYY @ h:mm a")}
           </Text>
         </View>
         <View style={styles.chartContainer}>

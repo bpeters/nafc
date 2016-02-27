@@ -62,7 +62,7 @@ class Message extends React.Component{
     return (
       <View style={styles.container}>
         <StatBar 
-          timestamp={TIMESTAMP}
+          timestamp={message.timestamp}
           score={SCORE}
         />
         <ScrollView

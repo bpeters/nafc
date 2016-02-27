@@ -1,3 +1,4 @@
+import moment from 'moment';
 import * as types from '../constants/action-types';
 
 export function newMessage() {
@@ -68,6 +69,7 @@ export function updateMessage(text) {
         type: types.UPDATE_MESSAGE,
         message: {
           text: text,
+          timestamp: moment.now(),
         },
       });
     } catch (err) {
