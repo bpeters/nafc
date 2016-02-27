@@ -52,6 +52,7 @@ class Message extends React.Component{
       isEdit: false,
       showReplacement: false,
       match: null,
+      showDelete: false,
     };
   }
 
@@ -82,6 +83,7 @@ class Message extends React.Component{
         </ScrollView>
         {!this.state.isEdit && message.text && !this.props.loading ? this._renderButtons() : null}
         {this.state.showReplacement ? this._renderReplacement() : null}
+        {this.state.showDelete ? this._renderDelete() : null}
       </View>
     );
   }
@@ -119,7 +121,7 @@ class Message extends React.Component{
       <View style={styles.buttonContainer}>
         <View style={styles.button}>
           <TouchableOpacity
-            onPress={this._onDelete.bind(this)}
+            onPress={this._onSoftDelete.bind(this)}
           >
             <Text style={styles.buttonText}>
               Delete
@@ -186,6 +188,36 @@ class Message extends React.Component{
     );
   }
 
+  _renderDelete() {
+    return (
+      <View style={styles.deleteContainer}>
+        <View style={styles.deleteTitle}>
+          <Text style={styles.deleteText}>
+            delete message?
+          </Text>
+        </View>
+        <View style={styles.deleteButtons}>
+          <TouchableOpacity
+            onPress={this._onSoftDelete.bind(this)}
+            style={styles.deleteButton}
+          >
+            <Text style={styles.deleteText}>
+              no
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this._onDelete.bind(this)}
+            style={styles.deleteButton}
+          >
+            <Text style={styles.deleteText}>
+              yes
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
   _onChangeText(text) {
     this.props.dispatch(
       updateMessage(text)
@@ -194,6 +226,12 @@ class Message extends React.Component{
 
   _onDelete() {
     this.props.dispatch(removeMessage());
+  }
+
+  _onSoftDelete() {
+    this.setState({
+      showDelete: !this.state.showDelete,
+    });
   }
 
   _onEdit() {
