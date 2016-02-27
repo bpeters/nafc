@@ -102,7 +102,10 @@ class Message extends React.Component{
 
   _renderText(message) {
     return (
-      <WordsComponent message={message} />
+      <WordsComponent
+        message={message}
+        onPress={this._onWordPress.bind(this)}
+      />
     );
   }
 
@@ -173,6 +176,10 @@ class Message extends React.Component{
 
   _onNew() {
     this.props.dispatch(newMessage());
+  }
+
+  _onWordPress(match) {
+    console.log(match);
   }
 
   _onKeyboardWillShow() {

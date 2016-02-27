@@ -25,12 +25,15 @@ class Words extends React.Component{
 
   static propTypes = {
     message: PropTypes.object.isRequired,
+    onPress: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      showReplacements: false,
+    };
   }
 
   render() {
@@ -64,7 +67,7 @@ class Words extends React.Component{
         return (
           <TouchableOpacity
             key={i}
-            onPress={() => {this._onPress(match)}}
+            onPress={() => {this.props.onPress(match)}}
           >
             <Text style={[styles.text, highlight]}>
               {word}
@@ -85,10 +88,6 @@ class Words extends React.Component{
         {text}
       </View>
     );
-  }
-
-  _onPress(match) {
-    console.log(match);
   }
 
 }
