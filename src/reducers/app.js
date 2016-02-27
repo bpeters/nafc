@@ -6,8 +6,9 @@ import {
   ERROR_DEFAULT
 } from '../constants/strings';
 
-function newMessage() {
+function newMessage(index) {
   return {
+    index: index,
     text: null,
     timestamp: moment.now(),
     didSend: false,
@@ -18,7 +19,7 @@ function newMessage() {
 
 const initialState = {
   index: 0,
-  messages: [newMessage()],
+  messages: [newMessage(0)],
   loading: false,
   success: false,
   error: null,
@@ -30,12 +31,13 @@ export default function app(state = initialState, action) {
   switch (action.type) {
 
     case types.NEW_MESSAGE:
+      let index = messages.length;
 
-      messages.push(newMessage());
+      messages.push(newMessage(index));
 
       return Object.assign({}, state, {
         messages: messages,
-        index: messages.length - 1,
+        index: index,
       });
 
     case types.UPDATE_MESSAGE:
@@ -51,6 +53,8 @@ export default function app(state = initialState, action) {
 
       messages[state.index].sentiment = action.sentiment;
       messages[state.index].keywords = action.keywords;
+
+      console.log(state.index, messages[state.index]);
 
       return Object.assign({}, state, {
         messages: messages,

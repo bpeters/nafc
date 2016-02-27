@@ -61,7 +61,7 @@ export function analyzeMessage(text) {
         return key;
       });
 
-      let kewordSentiment = await fetch(`https://apiv2.indico.io/sentiment/batch?key=${INDICO_KEY}`, {
+      let kewordSentiment = await fetch(`https://apiv2.indico.io/sentimenthq/batch?key=${INDICO_KEY}`, {
         method: 'POST',
         body: JSON.stringify({
           data : keywords

@@ -2,7 +2,8 @@ import React from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import StatBar from '../../components/stat-bar';
+import StatBarComponent from '../../components/stat-bar';
+import WordsComponent from '../../components/words';
 
 import {
   INPUT_DEFAULT
@@ -36,6 +37,7 @@ class Message extends React.Component{
 
   static propTypes = {
     message: PropTypes.object.isRequired,
+    index: PropTypes.number,
     editable: PropTypes.bool,
     loading: PropTypes.bool,
   };
@@ -59,7 +61,7 @@ class Message extends React.Component{
 
     return (
       <View style={styles.container}>
-        <StatBar 
+        <StatBarComponent 
           timestamp={message.timestamp}
           sentiment={message.sentiment}
           loading={this.props.loading}
@@ -71,7 +73,7 @@ class Message extends React.Component{
           onKeyboardWillHide={this._onKeyboardWillHide.bind(this)}
           onKeyboardWillShow={this._onKeyboardWillShow.bind(this)}
         >
-          {this.state.isEdit || (!this.state.isEdit && !message.text) ? this._renderTextInput(message.text) : this._renderText(message.text)}
+          {this.state.isEdit || (!this.state.isEdit && !message.text) ? this._renderTextInput(message.text) : this._renderText(message)}
         </ScrollView>
         {!this.state.isEdit && message.text && !this.props.loading ? this._renderButtons() : null}
       </View>
@@ -97,13 +99,9 @@ class Message extends React.Component{
     );
   }
 
-  _renderText(text) {
+  _renderText(message) {
     return (
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>
-          {text}
-        </Text>
-      </View>
+      <WordsComponent message={message} />
     );
   }
 
@@ -174,7 +172,7 @@ class Message extends React.Component{
       isEdit: false,
     });
 
-    if (this.props.message.text) {
+    if (this.props.message.text && this.props.message.index === this.props.index) {
       this.props.dispatch(analyzeMessage(this.props.message.text));
     }
   }

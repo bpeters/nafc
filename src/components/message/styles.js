@@ -33,16 +33,6 @@ let Styles = StyleSheet.create({
     width: SCREEN_WIDTH - (X_OFFSET * 2),
     color: BLACK,
   },
-  textContainer: {
-    width: SCREEN_WIDTH - (X_OFFSET * 2),
-    paddingTop: 4,
-  },
-  text: {
-    color: BLACK,
-    fontSize: 26,
-    fontFamily: 'AvenirNext-Regular',
-    lineHeight: 36,
-  },
   buttonContainer: {
     height: 60,
     paddingTop: 1,
