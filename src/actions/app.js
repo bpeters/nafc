@@ -98,36 +98,38 @@ export function getReplacements(text) {
 
       console.log(words);
 
-      // let kewordSentiment = await fetch(`https://apiv2.indico.io/sentimenthq/batch?key=${INDICO_KEY}`, {
-      //   method: 'POST',
-      //   body: JSON.stringify({
-      //     data : the
-      //   }),
-      // });
+      let kewordSentiment = await fetch(`https://apiv2.indico.io/sentimenthq/batch?key=${INDICO_KEY}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          data : words
+        }),
+      });
 
-      // kewordSentiment = JSON.parse(kewordSentiment._bodyText).results;
+      kewordSentiment = JSON.parse(kewordSentiment._bodyText).results;
+
+
+
+      //console.log(kewordSentiment);
 
       // sentiments = [];
 
-      // keywords = _.map(keywords, (keyword, key) => {
-      //   sentiments.push(kewordSentiment[key]);
-      //   return {
-      //     text: keyword,
-      //     sentiment: kewordSentiment[key],
-      //   };
-      // });
+      keywords = _.map(kewordSentiment, (keyword, key) => {
+        return {
+          text: words[key],
+          sentiment: kewordSentiment[key],
+        };
+      });
 
-      // let average = _.map(weights, (weight, key) => {
-      //   return weight * sentiments[key];
-      // })
+      let newData = _.sortBy(keywords, (word) => { 
+        return word.sentiment; 
+      });
 
-      // let score = _.sum(sentiments)/sentiments.length;
+      let threeResults = newData.reverse().slice(0,3);
 
-      // dispatch({
-      //   type: types.ANALYZE_MESSAGE,
-      //   sentiment: score,
-      //   keywords: keywords,
-      // });
+      dispatch({
+        type: types.ANALYZE_MESSAGE,
+        words: threeResults,
+      });
 
       
 
