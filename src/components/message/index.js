@@ -18,6 +18,29 @@ let {
   TouchableOpacity,
 } = React;
 
+
+
+
+import RNChart from 'react-native-chart';
+
+const chartData = [
+    {
+        name: 'BarChart',
+        type: 'pie',
+        color:'purple',
+        
+        data: [75,25],
+        sliceColors: ['red', 'white']
+    }
+];
+
+const xLabels = ['0','1'];
+
+
+
+
+
+
 class Message extends React.Component{
 
   static propTypes = {};
@@ -36,8 +59,34 @@ class Message extends React.Component{
     return (
       <View style={styles.container}>
         <View style={styles.stats}>
-          <View style={styles.circle}>
+
+        <View style={styles.timeContainer}>
+
+          
+        	<Text style={styles.timestamp}>
+        		Feb. 23, 2016 @ 12:01 PM
+        	</Text>
+        </View>
+
+        <View style={styles.chartContainer}>
+          <RNChart 
+          	style={styles.chart}
+          	chartData={chartData}
+
+           />
+           <View style={styles.overlay}>
+           </View>
           </View>
+        
+
+          
+
+
+
+                
+            
+
+
 
         </View>
         <ScrollView
