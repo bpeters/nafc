@@ -11,6 +11,7 @@ import {
 import {
   newMessage,
   updateMessage,
+  analyzeMessage,
 } from '../../actions/app';
 
 import styles from './styles.js';
@@ -31,15 +32,12 @@ let {
   TouchableOpacity,
 } = React;
 
-
-const TIMESTAMP = 'FEB. 23, 2016 @ 12:06 PM';
-const SCORE = 10;
-
-
 class Message extends React.Component{
 
   static propTypes = {
     message: PropTypes.object.isRequired,
+    editable: PropTypes.bool,
+    loading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -63,7 +61,8 @@ class Message extends React.Component{
       <View style={styles.container}>
         <StatBar 
           timestamp={message.timestamp}
-          score={SCORE}
+          sentiment={message.sentiment}
+          loading={this.props.loading}
         />
         <ScrollView
           style={styles.scrollView}
@@ -74,7 +73,7 @@ class Message extends React.Component{
         >
           {this.state.isEdit || (!this.state.isEdit && !message.text) ? this._renderTextInput(message.text) : this._renderText(message.text)}
         </ScrollView>
-        {!this.state.isEdit && message.text ? this._renderButtons() : null}
+        {!this.state.isEdit && message.text && !this.props.loading ? this._renderButtons() : null}
       </View>
     );
   }
@@ -172,13 +171,13 @@ class Message extends React.Component{
 
   _onKeyboardWillHide() {
     this.setState({
-      isEdit: false
+      isEdit: false,
     });
+
+    if (this.props.message.text) {
+      this.props.dispatch(analyzeMessage(this.props.message.text));
+    }
   }
 }
 
-function select(state) {
-  return {};
-}
-
-export default connect(select)(Message);
+export default connect()(Message);

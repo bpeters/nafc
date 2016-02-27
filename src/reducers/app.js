@@ -11,7 +11,7 @@ function newMessage() {
     text: null,
     timestamp: moment.now(),
     didSend: false,
-    sentiment: null,
+    sentiment: 1,
     keywords: null,
   };
 };
@@ -40,10 +40,21 @@ export default function app(state = initialState, action) {
 
     case types.UPDATE_MESSAGE:
 
-      messages[state.index] = action.message;
+      messages[state.index].text = action.text;
+      messages[state.index].timestamp = action.timestamp;
 
       return Object.assign({}, state, {
         messages: messages,
+      });
+
+    case types.ANALYZE_MESSAGE:
+
+      messages[state.index].sentiment = action.sentiment;
+      messages[state.index].keywords = action.keywords;
+
+      return Object.assign({}, state, {
+        messages: messages,
+        loading: false,
       });
 
     case types.PAGINATE_MESSAGES:

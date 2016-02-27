@@ -1,5 +1,4 @@
 import React from 'react-native';
-import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -26,6 +25,8 @@ class StatBar extends React.Component{
 
   static propTypes = {
     timestamp: PropTypes.number.isRequired,
+    sentiment: PropTypes.number.isRequired,
+    loading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -35,27 +36,29 @@ class StatBar extends React.Component{
   }
 
   render() {
+    let score = Math.round(this.props.sentiment * 100);
+
     let color = LIGHT_GRAY;
-    let compliment = 96 - this.props.score;
+    let compliment = 96 - score;
     let data;
     let sliceColors;
 
-    if(this.props.score >= 96) {
-      data = [this.props.score, 100 - this.props.score];
+    if (score >= 96) {
+      data = [score, 100 - score];
       sliceColors = [YELLOW, WHITE];
       color = YELLOW;
     } else {
-      if(this.props.score >= 75) {
+      if (score >= 75) {
         color = YELLOW;
-      } else if (this.props.score < 75 && this.props.score >= 50) {
+      } else if (score < 75 && score >= 50) {
         color = PURPLE;
-      }  else {
+      } else {
         color = RED;
       }
-      data = [this.props.score, 2, compliment, 2],
+
+      data = [score, 2, compliment, 2],
       sliceColors = [color, WHITE, LIGHT_GRAY, WHITE]
     }
-    
 
     const chartData = [{
       name: 'BarChart',
@@ -76,14 +79,14 @@ class StatBar extends React.Component{
             style={styles.chart}
             chartData={chartData}
             xLabels={['0','1']}
-           />
-           <View style={styles.overlay}>
+          />
+          <View style={styles.overlay}>
             <Text style={[styles.textOverlay, {
               color: color,
             }]}>
-              {this.props.score}
-             </Text>
-           </View>
+            {score}
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -91,8 +94,4 @@ class StatBar extends React.Component{
 
 }
 
-function select(state) {
-  return {};
-}
-
-export default connect(select)(StatBar);
+export default StatBar;

@@ -38,6 +38,7 @@ class Message extends React.Component{
           key={key}
           message={message}
           editable={this.state.editable}
+          loading={this.props.loading}
         />
       );
     });
@@ -52,6 +53,7 @@ class Message extends React.Component{
         autoplayDirection={false}
         onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
         onMomentumScrollEnd={this._onMomentumScrollEnd.bind(this)}
+        scrollEnabled={!!this.props.loading}
       >
         {messages}
       </Swiper>
@@ -77,6 +79,7 @@ function select(state) {
   return {
     index: state.app.index,
     messages: state.app.messages,
+    loading: state.app.loading,
   };
 }
 
