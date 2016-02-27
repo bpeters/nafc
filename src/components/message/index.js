@@ -170,6 +170,17 @@ class Message extends React.Component{
       );
     });
 
+    let notFound = (
+      <TouchableOpacity
+        onPress={this._onMatchPress.bind(this)}
+        style={[styles.replacement, {backgroundColor: GRAY}]}
+      >
+        <Text style={styles.replacementText}>
+          no alteratives
+        </Text>
+      </TouchableOpacity>
+    );
+
     return (
       <View style={styles.replacementContainer}>
         <TouchableOpacity
@@ -180,7 +191,7 @@ class Message extends React.Component{
             {match.text}
           </Text>
         </TouchableOpacity>
-        {replacements}
+        {!_.isEmpty(this.props.replacements) || this.props.loading ? replacements : notFound}
       </View>
     );
   }
