@@ -23,6 +23,8 @@ import {
   WHITE,
   YELLOW,
   LIGHT_GRAY,
+  PURPLE,
+  RED,
 } from '../../theme';
 
 let {
@@ -48,6 +50,9 @@ class Message extends React.Component{
 
     this.state = {
       isEdit: false,
+      showReplacement: false,
+      match: null,
+      showDelete: false,
     };
   }
 
@@ -78,6 +83,8 @@ class Message extends React.Component{
           {this.state.isEdit || (!this.state.isEdit && !message.text) ? this._renderTextInput(message.text) : this._renderText(message)}
         </ScrollView>
         {!this.state.isEdit && message.text && !this.props.loading ? this._renderButtons() : null}
+        {this.state.showReplacement ? this._renderReplacement() : null}
+        {this.state.showDelete ? this._renderDelete() : null}
       </View>
     );
   }
@@ -115,7 +122,7 @@ class Message extends React.Component{
       <View style={styles.buttonContainer}>
         <View style={styles.button}>
           <TouchableOpacity
-            onPress={this._onDelete.bind(this)}
+            onPress={this._onSoftDelete.bind(this)}
           >
             <Text style={styles.buttonText}>
               Delete
@@ -153,6 +160,65 @@ class Message extends React.Component{
     );
   }
 
+  _renderReplacement() {
+    let match = this.state.match;
+
+    let score = Math.round(match.sentiment * 100);
+
+    let highlight = {
+      backgroundColor: RED,
+    };
+
+    if (score >= 75) {
+      highlight.backgroundColor = YELLOW;
+    } else if (score < 75 && score >= 50) {
+      highlight.backgroundColor = PURPLE;
+    }
+
+    return (
+      <View style={styles.replacementContainer}>
+        <TouchableOpacity
+          onPress={this._onMatchPress.bind(this)}
+          style={[styles.replacement, highlight]}
+        >
+          <Text style={styles.replacementText}>
+            {match.text}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  _renderDelete() {
+    return (
+      <View style={styles.deleteContainer}>
+        <View style={styles.deleteTitle}>
+          <Text style={styles.deleteText}>
+            delete message?
+          </Text>
+        </View>
+        <View style={styles.deleteButtons}>
+          <TouchableOpacity
+            onPress={this._onSoftDelete.bind(this)}
+            style={styles.deleteButton}
+          >
+            <Text style={styles.deleteText}>
+              no
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this._onDelete.bind(this)}
+            style={styles.deleteButton}
+          >
+            <Text style={styles.deleteText}>
+              yes
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
   _onChangeText(text) {
     this.props.dispatch(
       updateMessage(text)
@@ -161,6 +227,12 @@ class Message extends React.Component{
 
   _onDelete() {
     this.props.dispatch(removeMessage());
+  }
+
+  _onSoftDelete() {
+    this.setState({
+      showDelete: !this.state.showDelete,
+    });
   }
 
   _onEdit() {
@@ -180,7 +252,17 @@ class Message extends React.Component{
   }
 
   _onWordPress(match) {
-    console.log(match);
+    this.setState({
+      showReplacement: true,
+      match: match,
+    });
+  }
+
+  _onMatchPress() {
+    this.setState({
+      showReplacement: false,
+      match: null,
+    });
   }
 
   _onKeyboardWillShow() {

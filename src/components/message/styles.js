@@ -7,7 +7,7 @@ import {
   X_OFFSET,
   SCREEN_HEIGHT,
   SCREEN_WIDTH,
-  YELLOW,
+  LIGHT_GRAY,
 } from '../../theme';
 
 let {
@@ -50,6 +50,62 @@ let Styles = StyleSheet.create({
     fontSize: 12,
     letterSpacing: 2,
     fontFamily: 'AvenirNext-Medium',
+  },
+  replacementContainer: {
+    top: 200,
+    left: X_OFFSET * 2,
+    position: 'absolute',
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+  },
+  replacement: {
+    padding: 8,
+    width: SCREEN_WIDTH - (X_OFFSET * 4),
+    backgroundColor: BLACK,
+  },
+  replacementText: {
+    fontSize: 26,
+    fontFamily: 'AvenirNext-Regular',
+    color: WHITE,
+    textAlign: 'center',
+  },
+  deleteContainer: {
+    top: 200,
+    left: X_OFFSET * 2,
+    position: 'absolute',
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+  },
+  deleteTitle: {
+    padding: 16,
+    width: SCREEN_WIDTH - (X_OFFSET * 4),
+    backgroundColor: WHITE,
+    borderColor: LIGHT_GRAY,
+    borderWidth: 1,
+  },
+  deleteButtons: {
+    width: SCREEN_WIDTH - (X_OFFSET * 4),
+    flexDirection: 'row',
+  },
+  deleteButton: {
+    width: (SCREEN_WIDTH - (X_OFFSET * 4)) / 2,
+    padding: 8,
+    borderColor: LIGHT_GRAY,
+    borderWidth: 1,
+  },
+  deleteText: {
+    fontSize: 26,
+    fontFamily: 'AvenirNext-Regular',
+    color: BLACK,
+    textAlign: 'center',
   },
 });
 
