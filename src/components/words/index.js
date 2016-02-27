@@ -16,6 +16,7 @@ let {
   View,
   PropTypes,
   Text,
+  TouchableOpacity,
 } = React;
 
 import RNChart from 'react-native-chart';
@@ -61,9 +62,14 @@ class Words extends React.Component{
         }
 
         return (
-          <Text key={i} style={[styles.text, highlight]}>
-            {word}
-          </Text>
+          <TouchableOpacity
+            key={i}
+            onPress={() => {this._onPress(match)}}
+          >
+            <Text style={[styles.text, highlight]}>
+              {word}
+            </Text>
+          </TouchableOpacity>
         );
       } else {
         return (
@@ -79,6 +85,10 @@ class Words extends React.Component{
         {text}
       </View>
     );
+  }
+
+  _onPress(match) {
+    console.log(match);
   }
 
 }
