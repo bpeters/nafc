@@ -26,52 +26,45 @@ let Styles = StyleSheet.create({
     height: 60,
     width: SCREEN_WIDTH - (X_OFFSET * 2),
   },
-  chart: {
-    height: 60,
-    width: 60,
-  },
-  circle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'red',
-    transform: [
-      {scaleX: 2}
-    ]
-  },
-  triangle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'red'
-  },
   scrollView: {
     top: Y_OFFSET,
     left: X_OFFSET,
   },
   textInput: {
     fontSize: 26,
+    fontFamily: 'AvenirNext-Regular',
+    lineHeight: 36,
     height: SCREEN_HEIGHT - 320,
     width: SCREEN_WIDTH - (X_OFFSET * 2),
     color: BLACK,
   },
   textContainer: {
     width: SCREEN_WIDTH - (X_OFFSET * 2),
+    paddingTop: 5,
   },
   text: {
-    fontSize: 26,
     color: BLACK,
+    fontSize: 26,
+    fontFamily: 'AvenirNext-Regular',
+    lineHeight: 36,
   },
   buttonContainer: {
-    height: 20,
+    height: 60,
     paddingTop: 1,
     width: SCREEN_WIDTH - (X_OFFSET * 2),
     left: X_OFFSET,
     marginBottom: Y_OFFSET,
     marginTop: Y_OFFSET,
+    flexDirection: 'row',
   },
   button: {
-    fontSize: 18,
+    marginTop: Y_OFFSET,
+    marginRight: 40,
+  },
+  buttonText: {
+    fontSize: 12,
+    letterSpacing: 2,
+    fontFamily: 'AvenirNext-Medium',
   },
 });
 

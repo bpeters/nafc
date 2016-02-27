@@ -26,12 +26,25 @@ class Message extends React.Component{
   }
 
   render() {
+
+    console.log(this.props.messages);
+
+    let messages = _.map(this.props.messages, (message, key) => {
+      message.key = key;
+
+      return (
+        <MessageComponent
+          key={key}
+          message={message}
+        />
+      );
+    });
+
     return (
       <Swiper
-        showsButtons={true}
+        showsButtons={false}
       >
-        <MessageComponent />
-        <MessageComponent />
+        {messages}
       </Swiper>
     );
   }
@@ -39,7 +52,9 @@ class Message extends React.Component{
 }
 
 function select(state) {
-  return {};
+  return {
+    messages: state.app.messages,
+  };
 }
 
 export default connect(select)(Message);
