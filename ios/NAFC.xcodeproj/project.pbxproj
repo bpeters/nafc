@@ -17,12 +17,16 @@
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		9D166ADD1BBF408A95A085FD /* libRNChart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64DA2372BDDB41F1A4CE1376 /* libRNChart.a */; };
+		893BF1EE1C814A9C002F260D /* Next-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 893BF1EB1C814A9C002F260D /* Next-Bold.ttf */; };
+		893BF1EF1C814A9C002F260D /* Next-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 893BF1EC1C814A9C002F260D /* Next-Medium.ttf */; };
+		893BF1F01C814A9C002F260D /* Next-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 893BF1ED1C814A9C002F260D /* Next-Regular.ttf */; };
+		899B93B81C81307100216C6D /* libRNMessageComposer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 899B93B71C81300800216C6D /* libRNMessageComposer.a */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +113,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 41FDC4F01AF5D0CF00DBBA9C;
 			remoteInfo = RNChart;
+		];
+		899B93B61C81300800216C6D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 899B93B21C81300700216C6D /* RNMessageComposer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C23F08041AFAB5C100312C72;
+			remoteInfo = RNMessageComposer;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -127,7 +138,6 @@
 		13B07F961A680F5B00A75B9A /* NAFC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NAFC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = NAFC/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = NAFC/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NAFC/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NAFC/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = NAFC/main.m; sourceTree = "<group>"; };
@@ -136,6 +146,10 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		9327ED27038B4147BDB5864E /* RNChart.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNChart.xcodeproj; path = "../node_modules/react-native-chart/RNChart.xcodeproj"; sourceTree = "<group>"; };
+		893BF1EB1C814A9C002F260D /* Next-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Next-Bold.ttf"; sourceTree = "<group>"; };
+		893BF1EC1C814A9C002F260D /* Next-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Next-Medium.ttf"; sourceTree = "<group>"; };
+		893BF1ED1C814A9C002F260D /* Next-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Next-Regular.ttf"; sourceTree = "<group>"; };
+		899B93B21C81300700216C6D /* RNMessageComposer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNMessageComposer.xcodeproj; path = "../node_modules/react-native-message-composer/RNMessageComposer.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +164,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				899B93B81C81307100216C6D /* libRNMessageComposer.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -248,7 +263,6 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = NAFC;
@@ -273,6 +287,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				899B93B21C81300700216C6D /* RNMessageComposer.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -299,6 +314,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				893BF1EB1C814A9C002F260D /* Next-Bold.ttf */,
+				893BF1EC1C814A9C002F260D /* Next-Medium.ttf */,
+				893BF1ED1C814A9C002F260D /* Next-Regular.ttf */,
 				13B07FAE1A68108700A75B9A /* NAFC */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* NAFCTests */,
@@ -321,6 +339,14 @@
 			isa = PBXGroup;
 			children = (
 				B156F3F81C813BC300DE9DF1 /* libRNChart.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		899B93B31C81300700216C6D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				899B93B71C81300800216C6D /* libRNMessageComposer.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -438,6 +464,10 @@
 					ProductGroup = B156F3EA1C813BC300DE9DF1 /* Products */;
 					ProjectRef = 9327ED27038B4147BDB5864E /* RNChart.xcodeproj */;
 				},
+				{
+					ProductGroup = 899B93B31C81300700216C6D /* Products */;
+					ProjectRef = 899B93B21C81300700216C6D /* RNMessageComposer.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -523,6 +553,12 @@
 			fileType = archive.ar;
 			path = libRNChart.a;
 			remoteRef = B156F3F71C813BC300DE9DF1 /* PBXContainerItemProxy */;
+		};
+		899B93B71C81300800216C6D /* libRNMessageComposer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNMessageComposer.a;
+			remoteRef = 899B93B61C81300800216C6D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -539,8 +575,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				893BF1EE1C814A9C002F260D /* Next-Bold.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				893BF1F01C814A9C002F260D /* Next-Regular.ttf in Resources */,
+				893BF1EF1C814A9C002F260D /* Next-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -590,18 +628,6 @@
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				13B07FB21A68108700A75B9A /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = NAFC;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
@@ -655,6 +681,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				HEADER_SEARCH_PATHS = (
@@ -676,6 +703,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

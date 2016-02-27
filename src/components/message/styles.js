@@ -28,13 +28,10 @@ let Styles = StyleSheet.create({
     width: SCREEN_WIDTH - (X_OFFSET * 2),
     justifyContent: 'center',
     flexDirection: 'row',
-       
   },
-
   timeContainer : {
     flex: 2,
     justifyContent: 'center',
-    
   },
   timestamp: {
     color: 'gray',
@@ -43,21 +40,14 @@ let Styles = StyleSheet.create({
   chartContainer : {
     flex: 1,
     justifyContent: 'center',
-    
-
   },
-
   chart: {
     height: 70,
     width: 80,
     position: 'absolute',
     top: 0,
     right: 0,
-    
-        
-    },
-
-
+  },
   overlay: {
     width: 40,
     height: 40,
@@ -68,11 +58,7 @@ let Styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-
   },
-
-
-
   triangle: {
     width: 60,
     height: 60,
@@ -85,27 +71,39 @@ let Styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 26,
+    fontFamily: 'AvenirNext-Regular',
+    lineHeight: 36,
     height: SCREEN_HEIGHT - 320,
     width: SCREEN_WIDTH - (X_OFFSET * 2),
     color: BLACK,
   },
   textContainer: {
     width: SCREEN_WIDTH - (X_OFFSET * 2),
+    paddingTop: 5,
   },
   text: {
-    fontSize: 26,
     color: BLACK,
+    fontSize: 26,
+    fontFamily: 'AvenirNext-Regular',
+    lineHeight: 36,
   },
   buttonContainer: {
-    height: 20,
+    height: 60,
     paddingTop: 1,
     width: SCREEN_WIDTH - (X_OFFSET * 2),
     left: X_OFFSET,
     marginBottom: Y_OFFSET,
     marginTop: Y_OFFSET,
+    flexDirection: 'row',
   },
   button: {
-    fontSize: 18,
+    marginTop: Y_OFFSET,
+    marginRight: 40,
+  },
+  buttonText: {
+    fontSize: 12,
+    letterSpacing: 2,
+    fontFamily: 'AvenirNext-Medium',
   },
 });
 

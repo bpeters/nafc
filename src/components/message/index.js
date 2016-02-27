@@ -1,6 +1,16 @@
 import React from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import RNChart from 'react-native-chart';
+
+import {
+  newMessage,
+  updateMessage,
+} from '../../actions/app';
+
+import {
+  INPUT_DEFAULT
+} from '../../constants/strings';
 
 import styles from './styles.js';
 
@@ -18,38 +28,27 @@ let {
   TouchableOpacity,
 } = React;
 
-
-
-
-import RNChart from 'react-native-chart';
-
 const chartData = [
-    {
-        name: 'BarChart',
-        type: 'pie',
-        color:'purple',
-        
-        data: [75,25],
-        sliceColors: ['red', 'white']
-    }
+  {
+    type: 'pie',
+    data: [75,25],
+    sliceColors: ['red', 'white']
+  }
 ];
 
 const xLabels = ['0','1'];
 
-
-
-
-
-
 class Message extends React.Component{
 
-  static propTypes = {};
+  static propTypes = {
+    message: PropTypes.object.isRequired,
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      text: null,
+      text: this.props.message.text,
       isEdit: true,
       sentiment: null,
     };
@@ -59,35 +58,19 @@ class Message extends React.Component{
     return (
       <View style={styles.container}>
         <View style={styles.stats}>
-
         <View style={styles.timeContainer}>
-
-          
-        	<Text style={styles.timestamp}>
-        		Feb. 23, 2016 @ 12:01 PM
-        	</Text>
+          <Text style={styles.timestamp}>
+            Feb. 23, 2016 @ 12:01 PM
+          </Text>
         </View>
-
-        <View style={styles.chartContainer}>
-          <RNChart 
-          	style={styles.chart}
-          	chartData={chartData}
-
-           />
-           <View style={styles.overlay}>
-           </View>
+          <View style={styles.chartContainer}>
+            <RNChart 
+              style={styles.chart}
+              chartData={chartData}
+             />
+             <View style={styles.overlay}>
+             </View>
           </View>
-        
-
-          
-
-
-
-                
-            
-
-
-
         </View>
         <ScrollView
           ref={(scrollView) => { this._scrollView = scrollView; }}
@@ -99,7 +82,7 @@ class Message extends React.Component{
         >
           {this.state.isEdit || (!this.state.isEdit && !this.state.text) ? this._renderTextInput() : this._renderText()}
         </ScrollView>
-        {!this.state.isEdit ? this._renderButtons() : null}
+        {!this.state.isEdit && this.state.text ? this._renderButtons() : null}
       </View>
     );
   }
@@ -108,7 +91,7 @@ class Message extends React.Component{
     return (
       <TextInput
         style={styles.textInput}
-        placeholder='Write something...'
+        placeholder={INPUT_DEFAULT}
         ref='textInput'
         onChangeText={this._onChangeText.bind(this)}
         value={this.state.text}
@@ -135,13 +118,33 @@ class Message extends React.Component{
   _renderButtons() {
     return (
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={this._onEdit.bind(this)}
-        >
-          <Text style={styles.button}>
-            Edit
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.button}>
+          <TouchableOpacity
+            onPress={this._onEdit.bind(this)}
+          >
+            <Text style={styles.buttonText}>
+              EDIT
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.button}>
+          <TouchableOpacity
+            onPress={this._onSend.bind(this)}
+          >
+            <Text style={styles.buttonText}>
+              SEND
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.button}>
+          <TouchableOpacity
+            onPress={this._onNew.bind(this)}
+          >
+            <Text style={styles.buttonText}>
+              NEW
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -150,6 +153,14 @@ class Message extends React.Component{
     this.setState({
       isEdit: true
     });
+  }
+
+  _onSend() {
+    console.log('send');
+  }
+
+  _onNew() {
+    this.props.dispatch(newMessage());
   }
 
   _onKeyboardWillShow() {
@@ -164,7 +175,9 @@ class Message extends React.Component{
     });
 
     if (this.state.text) {
-      this._getSentiment(this.state.text);
+      this.props.dispatch(
+        updateMessage(this.props.message.key, this.state.text)
+      );
     }
   }
 
@@ -172,58 +185,6 @@ class Message extends React.Component{
     this.setState({
       text: text
     });
-  }
-
-  async _getSentiment(text) {
-
-    try {
-      let sentiment = await fetch('https://apiv2.indico.io/sentimenthq?key=8ca88bff5804bbf9e4aaf511a5c16a32', {
-        method: 'POST',
-        body: JSON.stringify({
-          data : text
-        }),
-      });
-
-      sentiment = JSON.parse(sentiment._bodyText).results;
-
-      this.setState({
-        sentiment: sentiment
-      });
-
-      let keywords = await fetch('https://apiv2.indico.io/keywords?key=8ca88bff5804bbf9e4aaf511a5c16a32&version=2&top_n=8', {
-        method: 'POST',
-        body: JSON.stringify({
-          data : text
-        }),
-      });
-
-      keywords = _.map(JSON.parse(keywords._bodyText).results, (value, key) => {
-        return key;
-      });
-
-      console.log(sentiment, keywords);
-
-      let kewordSentiment = await fetch('https://apiv2.indico.io/sentiment/batch?key=8ca88bff5804bbf9e4aaf511a5c16a32', {
-        method: 'POST',
-        body: JSON.stringify({
-          data : keywords
-        }),
-      });
-
-      kewordSentiment = JSON.parse(kewordSentiment._bodyText).results;
-
-      console.log(kewordSentiment);
-
-      // let thesaurus = await fetch(`http://words.bighugelabs.com/api/2/899ba2d37f3a99c8e40440e13a0c7d8f/${keywords[0]}/json`, {
-      //   method: 'GET',
-      // });
-
-      // console.log(JSON.parse(thesaurus._bodyText));
-
-    } catch (err) {
-      console.log('Error', err);
-    }
-
   }
 
 }
