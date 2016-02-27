@@ -2,6 +2,7 @@ import React from 'react-native';
 
 import {
   BLACK,
+  WHITE,
   Y_OFFSET,
   X_OFFSET,
   SCREEN_HEIGHT,
@@ -20,7 +21,7 @@ let Styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   text: {
-    color: BLACK,
+    color: WHITE,
     fontSize: 26,
     fontFamily: 'AvenirNext-Regular',
     lineHeight: 36,

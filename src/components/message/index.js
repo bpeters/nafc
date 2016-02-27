@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import StatBarComponent from '../../components/stat-bar';
 import WordsComponent from '../../components/words';
+import ActionButtonComponent from '../../components/action-button';
 
 import {
   INPUT_DEFAULT
@@ -65,7 +66,6 @@ class Message extends React.Component{
 
   render() {
     let message = this.props.message;
-    console.log(message);
 
     return (
       <View style={styles.container}>
@@ -120,44 +120,12 @@ class Message extends React.Component{
 
   _renderButtons() {
     return (
-      <View style={styles.buttonContainer}>
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={this._onSoftDelete.bind(this)}
-          >
-            <Text style={styles.buttonText}>
-              Delete
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={this._onEdit.bind(this)}
-          >
-            <Text style={styles.buttonText}>
-              Edit
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={this._onSend.bind(this)}
-          >
-            <Text style={styles.buttonText}>
-              Send
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={this._onNew.bind(this)}
-          >
-            <Text style={styles.buttonText}>
-              New
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <ActionButtonComponent
+        onDelete={this._onSoftDelete.bind(this)}
+        onEdit={this._onEdit.bind(this)}
+        onSend={this._onSend.bind(this)}
+        onNew={this._onNew.bind(this)}
+      />
     );
   }
 
