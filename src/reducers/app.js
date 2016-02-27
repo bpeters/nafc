@@ -42,7 +42,7 @@ export default function app(state = initialState, action) {
     case types.LOAD_MESSAGES:
 
       let initialMessages = action.messages || [newMessage(0)];
-      let initialIndex = action.messages.length - 1 || state.index;
+      let initialIndex = action.messages ? action.messages.length - 1 : state.index;
 
       return Object.assign({}, state, {
         messages: initialMessages,
