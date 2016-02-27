@@ -29,6 +29,7 @@ function newMessage(index) {
 const initialState = {
   index: 0,
   messages: null,
+  replacements: null,
   loading: false,
   success: false,
   error: null,
@@ -99,6 +100,19 @@ export default function app(state = initialState, action) {
       return Object.assign({}, state, {
         messages: messages,
         index: (state.index === 0) ? 0 : state.index - 1,
+      });
+
+    case types.GET_REPLACEMENTS:
+
+      return Object.assign({}, state, {
+        replacements: action.replacements,
+        loading: false,
+      });
+
+    case types.CLEAR_REPLACEMENTS:
+
+      return Object.assign({}, state, {
+        replacements: null,
       });
 
     case types.PAGINATE_MESSAGES:

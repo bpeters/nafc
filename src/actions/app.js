@@ -4,6 +4,7 @@ import * as types from '../constants/action-types';
 
 import {
   INDICO_KEY,
+  LABS_KEY,
   STORAGE_KEY,
 } from '../config';
 
@@ -73,28 +74,31 @@ export function getReplacements(text) {
       loading: true,
     });
 
+    dispatch({
+      type: types.CLEAR_REPLACEMENTS,
+    });
+
     try {
 
-      let thesaurus = await fetch(`http://words.bighugelabs.com/api/2/899ba2d37f3a99c8e40440e13a0c7d8f/${text}/json`, {
+      let thesaurus = await fetch(`http://words.bighugelabs.com/api/2/${LABS_KEY}/${text}/json`, {
         method: 'GET',
-      },);
+      });
 
       let words = [];
 
-      if(thesaurus._bodyText){
-
+      if (thesaurus._bodyText) {
         let object = JSON.parse(thesaurus._bodyText);
 
         let obj = _.forEach(object, (value, key) => {
           let int = _.forEach(value, (v, k) => {
-            if(k === 'syn' || k === 'sim'){
+            if (k === 'syn' || k === 'sim') {
               let vals = _.forEach(v, (val, ke) => {
                 words.push(val)
-              })
+              });
             }
-          })
-        })
-      } 
+          });
+        });
+      }
 
       let kewordSentiment = await fetch(`https://apiv2.indico.io/sentimenthq/batch?key=${INDICO_KEY}`, {
         method: 'POST',
@@ -119,8 +123,8 @@ export function getReplacements(text) {
       let threeResults = newData.reverse().slice(0,3);
 
       dispatch({
-        type: types.ANALYZE_MESSAGE,
-        words: threeResults,
+        type: types.GET_REPLACEMENTS,
+        replacements: threeResults,
       });
 
     } catch (err) {
@@ -193,11 +197,6 @@ export function analyzeMessage(text) {
         keywords: keywords,
       });
 
-      // let thesaurus = await fetch(`http://words.bighugelabs.com/api/2/899ba2d37f3a99c8e40440e13a0c7d8f/${keywords[0]}/json`, {
-      //   method: 'GET',
-      // });
-
-      // console.log(JSON.parse(thesaurus._bodyText));
     } catch (err) {
       console.log(err);
     }

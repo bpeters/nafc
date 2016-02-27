@@ -76,16 +76,16 @@ class Message extends React.Component{
           onKeyboardWillHide={this._onKeyboardWillHide.bind(this)}
           onKeyboardWillShow={this._onKeyboardWillShow.bind(this)}
         >
-          <StatBarComponent 
+          <StatBarComponent
             timestamp={message.timestamp}
             sentiment={message.sentiment}
             loading={this.props.loading}
           />
           {this.state.isEdit || (!this.state.isEdit && !message.text) ? this._renderTextInput(message.text) : this._renderText(message)}
         </ScrollView>
-        {!this.state.isEdit && message.text && !this.props.loading ? this._renderButtons() : null}
         {this.state.showReplacement ? this._renderReplacement() : null}
         {this.state.showDelete ? this._renderDelete() : null}
+        {!this.state.isEdit && message.text && !this.props.loading ? this._renderButtons() : null}
       </View>
     );
   }
@@ -144,6 +144,32 @@ class Message extends React.Component{
       highlight.backgroundColor = PURPLE;
     }
 
+    let replacements = _.map(this.props.replacements, (replacement, key) => {
+      let replacementScore = Math.round(replacement.sentiment * 100);
+
+      let replacementHighlight = {
+        backgroundColor: RED,
+      };
+
+      if (replacementScore >= 75) {
+        replacementHighlight.backgroundColor = YELLOW;
+      } else if (replacementScore < 75 && replacementScore >= 50) {
+        replacementHighlight.backgroundColor = PURPLE;
+      }
+
+      return (
+        <TouchableOpacity
+          key={key}
+          onPress={this._onReplacementPress.bind(this)}
+          style={[styles.replacement, replacementHighlight]}
+        >
+          <Text style={styles.replacementText}>
+            {replacement.text}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
+
     return (
       <View style={styles.replacementContainer}>
         <TouchableOpacity
@@ -154,6 +180,7 @@ class Message extends React.Component{
             {match.text}
           </Text>
         </TouchableOpacity>
+        {replacements}
       </View>
     );
   }
@@ -221,7 +248,8 @@ class Message extends React.Component{
   }
 
   _onWordPress(match) {
-  	this.props.dispatch(getReplacements(match.text));
+    this.props.dispatch(getReplacements(match.text));
+
     this.setState({
       showReplacement: true,
       match: match,
@@ -233,6 +261,10 @@ class Message extends React.Component{
       showReplacement: false,
       match: null,
     });
+  }
+
+  _onReplacementPress() {
+    console.log('test');
   }
 
   _onKeyboardWillShow() {
@@ -252,4 +284,10 @@ class Message extends React.Component{
   }
 }
 
-export default connect()(Message);
+function select(state) {
+  return {
+    replacements: state.app.replacements,
+  };
+}
+
+export default connect(select)(Message);
