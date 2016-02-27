@@ -1,22 +1,16 @@
 import React from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import RNChart from 'react-native-chart';
-
-import {
-  newMessage,
-  updateMessage,
-} from '../../actions/app';
-
-import {
-  INPUT_DEFAULT
-} from '../../constants/strings';
 
 import styles from './styles.js';
+
+import StatBar from '../stat-bar';
 
 import {
   GRAY,
   WHITE,
+  YELLOW,
+  LIGHT_GRAY,
 } from '../../theme';
 
 let {
@@ -28,19 +22,14 @@ let {
   TouchableOpacity,
 } = React;
 
-const chartData = [
-  {
-    type: 'pie',
-    data: [75,25],
-    sliceColors: ['red', 'white']
-  }
-];
+
+const TIMESTAMP = 'FEB. 23, 2016 @ 12:06 PM';
+const SCORE = 65;
+
 
 class Message extends React.Component{
 
-  static propTypes = {
-    message: PropTypes.object.isRequired,
-  };
+  static propTypes = {};
 
   constructor(props) {
     super(props);
@@ -54,22 +43,10 @@ class Message extends React.Component{
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.stats}>
-          <View style={styles.timeContainer}>
-            <Text style={styles.timestamp}>
-              Feb. 23, 2016 @ 12:01 PM
-            </Text>
-          </View>
-          <View style={styles.chartContainer}>
-            <RNChart 
-              style={styles.chart}
-              chartData={chartData}
-              xLabels={['0','1']}
-             />
-             <View style={styles.overlay}>
-             </View>
-          </View>
-        </View>
+        <StatBar 
+        	timestamp={TIMESTAMP}
+        	score={SCORE}
+        />
         <ScrollView
           style={styles.scrollView}
           keyboardShouldPersistTaps={false}
@@ -114,33 +91,13 @@ class Message extends React.Component{
   _renderButtons() {
     return (
       <View style={styles.buttonContainer}>
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={this._onEdit.bind(this)}
-          >
-            <Text style={styles.buttonText}>
-              EDIT
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={this._onSend.bind(this)}
-          >
-            <Text style={styles.buttonText}>
-              SEND
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={this._onNew.bind(this)}
-          >
-            <Text style={styles.buttonText}>
-              NEW
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          onPress={this._onEdit.bind(this)}
+        >
+          <Text style={styles.button}>
+            Edit
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -149,14 +106,6 @@ class Message extends React.Component{
     this.setState({
       isEdit: true
     });
-  }
-
-  _onSend() {
-    console.log('send');
-  }
-
-  _onNew() {
-    this.props.dispatch(newMessage());
   }
 
   _onKeyboardWillShow() {
@@ -178,7 +127,6 @@ class Message extends React.Component{
       );
     }
   }
-
 }
 
 function select(state) {
