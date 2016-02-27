@@ -1,8 +1,34 @@
+import React from 'react-native';
 import moment from 'moment';
 import * as types from '../constants/action-types';
+
 import {
-  INDICO_KEY
+  INDICO_KEY,
+  STORAGE_KEY,
 } from '../config';
+
+let {
+  AsyncStorage,
+} = React;
+
+export function loadMessages() {
+  return async dispatch => {
+
+    try {
+      let messages = await AsyncStorage.getItem(STORAGE_KEY);
+
+      messages = JSON.parse(messages);
+
+      dispatch({
+        type: types.LOAD_MESSAGES,
+        messages: messages,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
+  };
+}
 
 export function newMessage() {
   return dispatch => {

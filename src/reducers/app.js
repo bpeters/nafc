@@ -1,10 +1,19 @@
+import React from 'react-native';
 import * as types from '../constants/action-types';
 import _ from 'lodash';
 import moment from 'moment';
 
 import {
+  STORAGE_KEY,
+} from '../config';
+
+import {
   ERROR_DEFAULT
 } from '../constants/strings';
+
+let {
+  AsyncStorage,
+} = React;
 
 function newMessage(index) {
   return {
@@ -30,6 +39,16 @@ export default function app(state = initialState, action) {
 
   switch (action.type) {
 
+    case types.LOAD_MESSAGES:
+
+      let initialMessages = action.messages || messages;
+      let initialIndex = action.messages.length - 1 || state.index;
+
+      return Object.assign({}, state, {
+        messages: initialMessages,
+        index: initialIndex,
+      });
+
     case types.NEW_MESSAGE:
       let index = messages.length;
 
@@ -54,7 +73,7 @@ export default function app(state = initialState, action) {
       messages[state.index].sentiment = action.sentiment;
       messages[state.index].keywords = action.keywords;
 
-      console.log(state.index, messages[state.index]);
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
 
       return Object.assign({}, state, {
         messages: messages,

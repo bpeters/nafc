@@ -6,6 +6,7 @@ import Swiper from 'react-native-swiper'
 import MessageComponent from '../../components/message';
 
 import {
+  loadMessages,
   paginateMessages,
 } from '../../actions/app';
 
@@ -29,6 +30,10 @@ class Message extends React.Component{
     this.state = {
       editable: true,
     };
+  }
+
+  componentWillMount() {
+    this.props.dispatch(loadMessages());
   }
 
   render() {
