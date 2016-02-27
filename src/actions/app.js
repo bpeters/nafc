@@ -96,8 +96,6 @@ export function getReplacements(text) {
         })
       } 
 
-      console.log(words);
-
       let kewordSentiment = await fetch(`https://apiv2.indico.io/sentimenthq/batch?key=${INDICO_KEY}`, {
         method: 'POST',
         body: JSON.stringify({
@@ -106,12 +104,6 @@ export function getReplacements(text) {
       });
 
       kewordSentiment = JSON.parse(kewordSentiment._bodyText).results;
-
-
-
-      //console.log(kewordSentiment);
-
-      // sentiments = [];
 
       keywords = _.map(kewordSentiment, (keyword, key) => {
         return {
@@ -131,9 +123,6 @@ export function getReplacements(text) {
         words: threeResults,
       });
 
-      
-
-      // console.log(JSON.parse(thesaurus._bodyText));
     } catch (err) {
       console.log(err);
     }
