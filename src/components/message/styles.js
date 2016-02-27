@@ -51,6 +51,28 @@ let Styles = StyleSheet.create({
     letterSpacing: 2,
     fontFamily: 'AvenirNext-Medium',
   },
+  replacementContainer: {
+    top: 200,
+    left: X_OFFSET * 2,
+    position: 'absolute',
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+  },
+  replacement: {
+    padding: 8,
+    width: SCREEN_WIDTH - (X_OFFSET * 4),
+    backgroundColor: BLACK,
+  },
+  replacementText: {
+    fontSize: 26,
+    fontFamily: 'AvenirNext-Regular',
+    color: WHITE,
+    textAlign: 'center',
+  },
 });
 
 export default Styles;

@@ -23,6 +23,8 @@ import {
   WHITE,
   YELLOW,
   LIGHT_GRAY,
+  PURPLE,
+  RED,
 } from '../../theme';
 
 let {
@@ -48,6 +50,8 @@ class Message extends React.Component{
 
     this.state = {
       isEdit: false,
+      showReplacement: false,
+      match: null,
     };
   }
 
@@ -77,6 +81,7 @@ class Message extends React.Component{
           {this.state.isEdit || (!this.state.isEdit && !message.text) ? this._renderTextInput(message.text) : this._renderText(message)}
         </ScrollView>
         {!this.state.isEdit && message.text && !this.props.loading ? this._renderButtons() : null}
+        {this.state.showReplacement ? this._renderReplacement() : null}
       </View>
     );
   }
@@ -152,6 +157,35 @@ class Message extends React.Component{
     );
   }
 
+  _renderReplacement() {
+    let match = this.state.match;
+
+    let score = Math.round(match.sentiment * 100);
+
+    let highlight = {
+      backgroundColor: RED,
+    };
+
+    if (score >= 75) {
+      highlight.backgroundColor = YELLOW;
+    } else if (score < 75 && score >= 50) {
+      highlight.backgroundColor = PURPLE;
+    }
+
+    return (
+      <View style={styles.replacementContainer}>
+        <TouchableOpacity
+          onPress={this._onMatchPress.bind(this)}
+          style={[styles.replacement, highlight]}
+        >
+          <Text style={styles.replacementText}>
+            {match.text}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   _onChangeText(text) {
     this.props.dispatch(
       updateMessage(text)
@@ -179,7 +213,17 @@ class Message extends React.Component{
   }
 
   _onWordPress(match) {
-    console.log(match);
+    this.setState({
+      showReplacement: true,
+      match: match,
+    });
+  }
+
+  _onMatchPress() {
+    this.setState({
+      showReplacement: false,
+      match: null,
+    });
   }
 
   _onKeyboardWillShow() {
