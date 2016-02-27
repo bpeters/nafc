@@ -13,6 +13,7 @@ import {
   newMessage,
   updateMessage,
   analyzeMessage,
+  removeMessage,
 } from '../../actions/app';
 
 import styles from './styles.js';
@@ -61,11 +62,6 @@ class Message extends React.Component{
 
     return (
       <View style={styles.container}>
-        <StatBarComponent 
-          timestamp={message.timestamp}
-          sentiment={message.sentiment}
-          loading={this.props.loading}
-        />
         <ScrollView
           style={styles.scrollView}
           keyboardShouldPersistTaps={false}
@@ -73,6 +69,11 @@ class Message extends React.Component{
           onKeyboardWillHide={this._onKeyboardWillHide.bind(this)}
           onKeyboardWillShow={this._onKeyboardWillShow.bind(this)}
         >
+          <StatBarComponent 
+            timestamp={message.timestamp}
+            sentiment={message.sentiment}
+            loading={this.props.loading}
+          />
           {this.state.isEdit || (!this.state.isEdit && !message.text) ? this._renderTextInput(message.text) : this._renderText(message)}
         </ScrollView>
         {!this.state.isEdit && message.text && !this.props.loading ? this._renderButtons() : null}
@@ -110,6 +111,15 @@ class Message extends React.Component{
       <View style={styles.buttonContainer}>
         <View style={styles.button}>
           <TouchableOpacity
+            onPress={this._onDelete.bind(this)}
+          >
+            <Text style={styles.buttonText}>
+              Delete
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.button}>
+          <TouchableOpacity
             onPress={this._onEdit.bind(this)}
           >
             <Text style={styles.buttonText}>
@@ -143,6 +153,10 @@ class Message extends React.Component{
     this.props.dispatch(
       updateMessage(text)
     );
+  }
+
+  _onDelete() {
+    this.props.dispatch(removeMessage());
   }
 
   _onEdit() {

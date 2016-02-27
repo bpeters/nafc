@@ -30,6 +30,14 @@ export function loadMessages() {
   };
 }
 
+export function removeMessage() {
+  return dispatch => {
+    dispatch({
+      type: types.REMOVE_MESSAGE,
+    });
+  };
+}
+
 export function newMessage() {
   return dispatch => {
     dispatch({

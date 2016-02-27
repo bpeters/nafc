@@ -28,7 +28,7 @@ function newMessage(index) {
 
 const initialState = {
   index: 0,
-  messages: [newMessage(0)],
+  messages: null,
   loading: false,
   success: false,
   error: null,
@@ -41,7 +41,7 @@ export default function app(state = initialState, action) {
 
     case types.LOAD_MESSAGES:
 
-      let initialMessages = action.messages || messages;
+      let initialMessages = action.messages || [newMessage(0)];
       let initialIndex = action.messages.length - 1 || state.index;
 
       return Object.assign({}, state, {
@@ -78,6 +78,27 @@ export default function app(state = initialState, action) {
       return Object.assign({}, state, {
         messages: messages,
         loading: false,
+      });
+
+    case types.REMOVE_MESSAGE:
+
+      _.forEach(messages, (message) => {
+        if (message.index > state.index) {
+          message.index = message.index - 1;
+        }
+      });
+
+      messages.splice(state.index, 1);
+
+      if (!messages.length) {
+        messages = [newMessage(0)]
+      }
+
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+
+      return Object.assign({}, state, {
+        messages: messages,
+        index: (state.index === 0) ? 0 : state.index - 1,
       });
 
     case types.PAGINATE_MESSAGES:

@@ -3,6 +3,7 @@ export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';
 export const PAGINATE_MESSAGES = 'PAGINATE_MESSAGES';
 export const ANALYZE_MESSAGE = 'ANALYZE_MESSAGE'
 export const LOAD_MESSAGES = 'LOAD_MESSAGES';
+export const REMOVE_MESSAGE = 'REMOVE_MESSAGE';
 export const LOADING = 'LOADING';
 export const SUCCESS = 'SUCCESS';
 export const ERROR = 'ERROR';

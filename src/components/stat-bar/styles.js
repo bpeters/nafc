@@ -16,8 +16,6 @@ let {
 
 let Styles = StyleSheet.create({
   stats: {
-    top: Y_OFFSET,
-    left: X_OFFSET,
     height: 60,
     width: SCREEN_WIDTH - (X_OFFSET * 2),
     justifyContent: 'center',

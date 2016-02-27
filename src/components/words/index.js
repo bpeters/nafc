@@ -34,7 +34,7 @@ class Words extends React.Component{
 
   render() {
     let message = this.props.message;
-    let words = message.text.split(' ');
+    let words = message.text.split(/[ \t\r\n]/);
 
     let text = _.map(words, (word, i) => {
       let match;
