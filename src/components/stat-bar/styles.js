@@ -58,6 +58,16 @@ let Styles = StyleSheet.create({
     color: YELLOW,
     fontFamily: 'AvenirNext-Bold',
   },
+  refresh: {
+    height: 40,
+    width: 40,
+    position: 'absolute',
+    top: 7,
+    right: 8,
+  },
+  icon: {
+    color: BLACK,
+  },
 });
 
 export default Styles;

@@ -65,8 +65,7 @@ let Styles = StyleSheet.create({
   replacement: {
     padding: 8,
     width: SCREEN_WIDTH - (X_OFFSET * 4),
-    borderColor: WHITE,
-    borderWidth: 1,
+    marginBottom: 1,
   },
   replacementText: {
     fontSize: 26,

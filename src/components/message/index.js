@@ -80,6 +80,7 @@ class Message extends React.Component{
             timestamp={message.timestamp}
             sentiment={message.sentiment}
             loading={this.props.loading}
+            isEdit={this.state.isEdit}
           />
           {this.state.isEdit || (!this.state.isEdit && !message.text) ? this._renderTextInput(message.text) : this._renderText(message)}
         </ScrollView>
@@ -160,7 +161,9 @@ class Message extends React.Component{
       return (
         <TouchableOpacity
           key={key}
-          onPress={this._onReplacementPress.bind(this)}
+          onPress={() => {
+            this._onReplacementPress(replacement);
+          }}
           style={[styles.replacement, replacementHighlight]}
         >
           <Text style={styles.replacementText}>
@@ -274,8 +277,8 @@ class Message extends React.Component{
     });
   }
 
-  _onReplacementPress() {
-    console.log('test');
+  _onReplacementPress(replacement) {
+    console.log(replacement);
   }
 
   _onKeyboardWillShow() {

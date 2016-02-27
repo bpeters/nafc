@@ -2,6 +2,8 @@ import React from 'react-native';
 import _ from 'lodash';
 import moment from 'moment';
 
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import styles from './styles.js';
 
 import {
@@ -17,6 +19,7 @@ let {
   View,
   PropTypes,
   Text,
+  TouchableOpacity,
 } = React;
 
 import RNChart from 'react-native-chart';
@@ -27,6 +30,7 @@ class StatBar extends React.Component{
     timestamp: PropTypes.number.isRequired,
     sentiment: PropTypes.number.isRequired,
     loading: PropTypes.bool,
+    isEdit: PropTypes.bool,
   };
 
   constructor(props) {
@@ -36,6 +40,36 @@ class StatBar extends React.Component{
   }
 
   render() {
+    return (
+      <View style={styles.stats}>
+        <View style={styles.timeContainer}>
+          <Text style={styles.timestamp}>
+            {moment(this.props.timestamp).format("MMM. D, YYYY @ h:mm a")}
+          </Text>
+        </View>
+        {this.props.isEdit ? this._renderRefresh() : this._renderChat()}
+      </View>
+    );
+  }
+
+  _renderRefresh() {
+    return (
+      <View style={styles.chartContainer}>
+        <TouchableOpacity
+          style={styles.refresh}
+        >
+          <Icon
+            name={'cached'}
+            size={40}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  _renderChat() {
+
     let score = Math.round(this.props.sentiment * 100);
 
     let color = LIGHT_GRAY;
@@ -68,30 +102,23 @@ class StatBar extends React.Component{
     }];
 
     return (
-      <View style={styles.stats}>
-        <View style={styles.timeContainer}>
-          <Text style={styles.timestamp}>
-            {moment(this.props.timestamp).format("MMM. D, YYYY @ h:mm a")}
+      <View style={styles.chartContainer}>
+        <RNChart 
+          style={styles.chart}
+          chartData={chartData}
+          xLabels={['0','1']}
+        />
+        <View style={styles.overlay}>
+          <Text style={[styles.textOverlay, {
+            color: color,
+          }]}>
+          {score}
           </Text>
-        </View>
-        <View style={styles.chartContainer}>
-          <RNChart 
-            style={styles.chart}
-            chartData={chartData}
-            xLabels={['0','1']}
-          />
-          <View style={styles.overlay}>
-            <Text style={[styles.textOverlay, {
-              color: color,
-            }]}>
-            {score}
-            </Text>
-          </View>
         </View>
       </View>
     );
   }
-
+ 
 }
 
 export default StatBar;
