@@ -102,6 +102,16 @@ export default function app(state = initialState, action) {
         index: (state.index === 0) ? 0 : state.index - 1,
       });
 
+    case types.REPLACE_MESSAGE:
+
+      messages[state.index].text = action.message;
+
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+
+      return Object.assign({}, state, {
+        messages: messages,
+      });
+
     case types.GET_REPLACEMENTS:
 
       return Object.assign({}, state, {

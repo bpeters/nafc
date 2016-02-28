@@ -16,6 +16,7 @@ import {
   analyzeMessage,
   removeMessage,
   getReplacements,
+  replaceMessage,
 } from '../../actions/app';
 
 import styles from './styles.js';
@@ -162,7 +163,7 @@ class Message extends React.Component{
         <TouchableOpacity
           key={key}
           onPress={() => {
-            this._onReplacementPress(replacement);
+            this._onReplacementPress(match, replacement);
           }}
           style={[styles.replacement, replacementHighlight]}
         >
@@ -237,6 +238,9 @@ class Message extends React.Component{
 
   _onDelete() {
     this.props.dispatch(removeMessage());
+    this.setState({
+      showDelete: !this.state.showDelete,
+    });
   }
 
   _onSoftDelete() {
@@ -277,8 +281,28 @@ class Message extends React.Component{
     });
   }
 
-  _onReplacementPress(replacement) {
-    console.log(replacement);
+  _onReplacementPress(match, replacement) {
+
+    let text = this.props.message.text;
+
+    let message = text.split(/[ \t\r\n]/);
+    message = _.map(message, (word) => {
+      let check = word.split(match.text);
+
+      if (check.length > 1 || check === match.text) {
+        return (check[0] || '') + replacement.text + (check[1] || '');
+      } else {
+        return word;
+      }
+    }).join(' ');
+
+    this.props.dispatch(replaceMessage(message));
+    this.props.dispatch(analyzeMessage(message));
+
+    this.setState({
+      showReplacement: false,
+      match: null,
+    });
   }
 
   _onKeyboardWillShow() {

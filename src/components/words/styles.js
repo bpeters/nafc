@@ -21,7 +21,7 @@ let Styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   text: {
-    color: WHITE,
+    color: BLACK,
     fontSize: 26,
     fontFamily: 'AvenirNext-Regular',
     lineHeight: 36,
