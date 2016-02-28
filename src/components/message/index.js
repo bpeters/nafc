@@ -1,6 +1,7 @@
 import React from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { RNMessageComposer } from 'NativeModules';
 
 import StatBarComponent from '../../components/stat-bar';
 import WordsComponent from '../../components/words';
@@ -258,7 +259,30 @@ class Message extends React.Component{
   }
 
   _onSend() {
-    console.log('send');
+    RNMessageComposer.composeMessageWithArgs(
+      {
+        'messageText': this.props.message.text,
+      },
+      (result) => {
+        switch(result) {
+          case RNMessageComposer.Sent:
+            console.log('the message has been sent');
+            break;
+          case RNMessageComposer.Cancelled:
+            console.log('user cancelled sending the message');
+            break;
+          case RNMessageComposer.Failed:
+            console.log('failed to send the message');
+            break;
+          case RNMessageComposer.NotSupported:
+            console.log('this device does not support sending texts');
+            break;
+          default:
+            console.log('something unexpected happened');
+            break;
+        }
+      }
+    );
   }
 
   _onNew() {
@@ -315,6 +339,8 @@ class Message extends React.Component{
     this.setState({
       isEdit: false,
     });
+
+    console.log(this.props.message.text, this.props.message.index === this.props.index);
 
     if (this.props.message.text && this.props.message.index === this.props.index) {
       this.props.dispatch(analyzeMessage(this.props.message.text));

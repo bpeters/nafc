@@ -138,6 +138,11 @@ export function getReplacements(text) {
 
     } catch (err) {
       console.log(err);
+
+      dispatch({
+        type: types.ERROR,
+        err: err,
+      });
     }
   };
 }
@@ -208,6 +213,11 @@ export function analyzeMessage(text) {
 
     } catch (err) {
       console.log(err);
+
+      dispatch({
+        type: types.ERROR,
+        err: err,
+      });
     }
   };
 }
