@@ -14,12 +14,13 @@ let {
 } = React;
 
 let Styles = StyleSheet.create({
-	onboardingScreen: {
-		flex: 1,
-	},
-	swiper: {
-		flex: 1,
-	},
+  onboardingScreen: {
+    flex: 1,
+    width: SCREEN_WIDTH,
+  },
+  swiper: {
+    flex: 1,
+  },
 });
 
 export default Styles;

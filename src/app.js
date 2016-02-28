@@ -9,6 +9,10 @@ import {
   ONBOARDING,
 } from './constants/routes';
 
+import {
+  ONBOARD_KEY,
+} from './config';
+
 import Theme from './theme';
 
 let {
@@ -16,13 +20,33 @@ let {
   Text,
   View,
   Alert,
+  AsyncStorage,
 } = React;
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+
+    this.state = {
+      didLoad: false,
+      isOnboarded: false,
+    };
+  }
+
+  componentWillMount() {
+    AsyncStorage.getItem(ONBOARD_KEY)
+      .then((item) => {
+        console.log(JSON.parse(item));
+
+        this.setState({
+          didLoad: true,
+          isOnboarded: JSON.parse(item)
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   render() {
@@ -30,24 +54,29 @@ class App extends React.Component {
       Alert.alert(this.props.app.error);
     }
 
-    let initialRoute = MessageContainer;
-    let type = MESSAGE;
+    if (this.state.didLoad) {
 
-    if(initialRoute) {
-      initialRoute = OnboardingContainer;
-      type = ONBOARDING;
+      let initialRoute = MessageContainer;
+      let type = MESSAGE;
+
+      if (!this.state.isOnboarded) {
+        initialRoute = OnboardingContainer;
+        type = ONBOARDING;
+      }
+
+      return (
+        <Navigator
+          configureScene={this._configureScene}
+          renderScene={this._renderScene}
+          initialRoute={{
+            component: initialRoute,
+            type: type,
+          }}
+        />
+      );
+    } else {
+      return null;
     }
-
-    return (
-      <Navigator
-        configureScene={this._configureScene}
-        renderScene={this._renderScene}
-        initialRoute={{
-          component: initialRoute,
-          type: type,
-        }}
-      />
-    );
   }
 
   _renderScene(route, navigator) {

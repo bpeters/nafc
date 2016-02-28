@@ -19,6 +19,10 @@ import {
   MESSAGE,
 } from '../../constants/routes';
 
+import {
+  ONBOARD_KEY,
+} from '../../config';
+
 import styles from './styles.js';
 
 let {
@@ -27,6 +31,7 @@ let {
   Image,
   TouchableWithoutFeedback,
   View,
+  AsyncStorage,
 } = React;
 
 class Onboarding extends React.Component{
@@ -39,8 +44,7 @@ class Onboarding extends React.Component{
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {
@@ -50,10 +54,10 @@ class Onboarding extends React.Component{
         <TouchableWithoutFeedback 
           onLongPress={() => this._dismissScreen()}
           delayLongPress={500}
+          key={key}
         >
           <Image
             style={styles.onboardingScreen}
-            key={key}
             source={image}
             index={this.props.index}
           />
@@ -84,6 +88,8 @@ class Onboarding extends React.Component{
       component: MessageContainer,
       type: MESSAGE,
     });
+
+    AsyncStorage.setItem(ONBOARD_KEY, JSON.stringify(true));
   }
 }
 
