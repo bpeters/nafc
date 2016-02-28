@@ -66,6 +66,15 @@ export function updateMessage(text) {
   };
 }
 
+export function replaceMessage(message) {
+  return dispatch => {
+    dispatch({
+      type: types.REPLACE_MESSAGE,
+      message: message,
+    });
+  };
+}
+
 export function getReplacements(text) {
   return async dispatch => {
 

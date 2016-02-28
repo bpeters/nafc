@@ -6,6 +6,7 @@ export const LOAD_MESSAGES = 'LOAD_MESSAGES';
 export const REMOVE_MESSAGE = 'REMOVE_MESSAGE';
 export const GET_REPLACEMENTS = 'GET_REPLACEMENTS';
 export const CLEAR_REPLACEMENTS = 'CLEAR_REPLACEMENTS';
+export const REPLACE_MESSAGE = 'REPLACE_MESSAGE';
 export const LOADING = 'LOADING';
 export const SUCCESS = 'SUCCESS';
 export const ERROR = 'ERROR';

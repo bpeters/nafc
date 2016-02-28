@@ -56,6 +56,7 @@ class Words extends React.Component{
 
         let highlight = {
           backgroundColor: RED,
+          color: WHITE,
         };
 
         if (score >= 75) {
