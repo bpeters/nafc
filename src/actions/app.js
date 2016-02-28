@@ -118,22 +118,25 @@ export function getReplacements(text) {
 
       kewordSentiment = JSON.parse(kewordSentiment._bodyText).results;
 
-      keywords = _.map(kewordSentiment, (keyword, key) => {
-        return {
-          text: words[key],
-          sentiment: kewordSentiment[key],
-        };
-      });
-
-      let newData = _.sortBy(keywords, (word) => { 
-        return word.sentiment; 
-      });
-
-      let threeResults = newData.reverse().slice(0,3);
+      let replacements = _.chain(kewordSentiment)
+        .map((keyword, key) => {
+          return {
+            text: words[key],
+            sentiment: kewordSentiment[key],
+          };
+        })
+        .uniqBy((word) => {
+          return word.text;
+        })
+        .sortBy((word) => { 
+          return word.sentiment; 
+        })
+        .value()
+        .reverse();
 
       dispatch({
         type: types.GET_REPLACEMENTS,
-        replacements: threeResults,
+        replacements: replacements,
       });
 
     } catch (err) {

@@ -196,7 +196,21 @@ class Message extends React.Component{
             {match.text}
           </Text>
         </TouchableOpacity>
-        {!_.isEmpty(this.props.replacements) || this.props.loading ? replacements : notFound}
+        <ScrollView
+          style={styles.replacementScrollView}
+        >
+          {!_.isEmpty(this.props.replacements) || this.props.loading ? replacements : notFound}
+        </ScrollView>
+        <TouchableOpacity
+          onPress={() => {
+            this._onReplacementPress(match, {text: ''});
+          }}
+          style={[styles.replacement, {backgroundColor: GRAY}]}
+        >
+          <Text style={styles.replacementText}>
+            remove word
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }

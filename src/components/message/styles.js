@@ -73,6 +73,9 @@ let Styles = StyleSheet.create({
     color: WHITE,
     textAlign: 'center',
   },
+  replacementScrollView: {
+    height: 160,
+  },
   deleteContainer: {
     top: 200,
     left: X_OFFSET * 2,
