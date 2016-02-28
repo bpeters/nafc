@@ -186,6 +186,19 @@ class Message extends React.Component{
       </TouchableOpacity>
     );
 
+    let remove = (
+      <TouchableOpacity
+        onPress={() => {
+          this._onReplacementPress(match, {text: ''});
+        }}
+        style={[styles.replacement, {backgroundColor: GRAY}]}
+      >
+        <Text style={styles.replacementText}>
+          remove word
+        </Text>
+      </TouchableOpacity>
+    );
+
     return (
       <View style={styles.replacementContainer}>
         <TouchableOpacity
@@ -201,16 +214,7 @@ class Message extends React.Component{
         >
           {!_.isEmpty(this.props.replacements) || this.props.loading ? replacements : notFound}
         </ScrollView>
-        <TouchableOpacity
-          onPress={() => {
-            this._onReplacementPress(match, {text: ''});
-          }}
-          style={[styles.replacement, {backgroundColor: GRAY}]}
-        >
-          <Text style={styles.replacementText}>
-            remove word
-          </Text>
-        </TouchableOpacity>
+        {!_.isEmpty(this.props.replacements) ? remove : null}
       </View>
     );
   }

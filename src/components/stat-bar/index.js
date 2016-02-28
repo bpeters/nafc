@@ -44,7 +44,7 @@ class StatBar extends React.Component{
       <View style={styles.stats}>
         <View style={styles.timeContainer}>
           <Text style={styles.timestamp}>
-            {moment(this.props.timestamp).format("MMM. D, YYYY @ h:mm a")}
+            {moment(this.props.timestamp).format("MMM. D, YYYY @ h:mm a").toUpperCase()}
           </Text>
         </View>
         {this.props.isEdit ? this._renderRefresh() : this._renderChat()}
