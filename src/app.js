@@ -2,9 +2,11 @@ import React from 'react-native';
 import { connect } from 'react-redux';
 
 import MessageContainer from './containers/message';
+import OnboardingContainer from './containers/onboarding';
 
 import {
   MESSAGE,
+  ONBOARDING,
 } from './constants/routes';
 
 import Theme from './theme';
@@ -28,13 +30,21 @@ class App extends React.Component {
       Alert.alert(this.props.app.error);
     }
 
+    let initialRoute = MessageContainer;
+    let type = MESSAGE;
+
+    if(initialRoute) {
+      initialRoute = OnboardingContainer;
+      type = ONBOARDING;
+    }
+
     return (
       <Navigator
         configureScene={this._configureScene}
         renderScene={this._renderScene}
         initialRoute={{
-          component: MessageContainer,
-          type: MESSAGE,
+          component: initialRoute,
+          type: type,
         }}
       />
     );
