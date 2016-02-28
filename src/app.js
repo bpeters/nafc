@@ -59,7 +59,7 @@ class App extends React.Component {
       let initialRoute = MessageContainer;
       let type = MESSAGE;
 
-      if (!this.state.isOnboarded) {
+      if (true) {
         initialRoute = OnboardingContainer;
         type = ONBOARDING;
       }
