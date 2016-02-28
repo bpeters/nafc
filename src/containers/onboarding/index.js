@@ -25,7 +25,7 @@ let {
   PropTypes,
   Navigator,
   Image,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } = React;
 
@@ -40,7 +40,6 @@ class Onboarding extends React.Component{
     super(props);
 
     this.state = {
-      editable: true,
     };
   }
 
@@ -48,25 +47,17 @@ class Onboarding extends React.Component{
     let images = [OnboardingScreen1, OnboardingScreen2, OnboardingScreen3, OnboardingScreen4];
     let screens = _.map(images, (image, key) => {
       return (
-        <Image
-          style={styles.onboardingScreen}
-          key={key}
-          source={image}
-          index={this.props.index}
+        <TouchableWithoutFeedback 
+          onLongPress={() => this._dismissScreen()}
+          delayLongPress={500}
         >
-          <View style={styles.container}>
-            <TouchableOpacity
-              onPress={() => this._dismissScreen()}
-              style={styles.mainButton}
-            >
-              <Icon
-                name='close'
-                size={24}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
-        </Image>
+          <Image
+            style={styles.onboardingScreen}
+            key={key}
+            source={image}
+            index={this.props.index}
+          />
+        </TouchableWithoutFeedback>
       );
     });
 
