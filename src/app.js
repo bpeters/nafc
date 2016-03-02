@@ -37,7 +37,6 @@ class App extends React.Component {
   componentWillMount() {
     AsyncStorage.getItem(ONBOARD_KEY)
       .then((item) => {
-        console.log(JSON.parse(item));
 
         this.setState({
           didLoad: true,

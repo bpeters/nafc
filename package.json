@@ -10,6 +10,7 @@
     "moment": "^2.11.2",
     "react-native": "^0.20.0",
     "react-native-chart": "^0.1.10",
+    "react-native-code-push": "^1.7.3-beta",
     "react-native-message-composer": "0.0.4",
     "react-native-swiper": "^1.4.3",
     "react-native-vector-icons": "^1.2.1",

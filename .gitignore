@@ -35,3 +35,6 @@ npm-debug.log
 
 # config
 src/config.js
+
+#bundle
+release/*
