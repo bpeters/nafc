@@ -1,12 +1,34 @@
 import React from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { RNMessageComposer } from 'NativeModules';
+
+import StatBarComponent from '../../components/stat-bar';
+import WordsComponent from '../../components/words';
+import ActionButtonComponent from '../../components/action-button';
+
+import {
+  INPUT_DEFAULT
+} from '../../constants/strings';
+
+import {
+  newMessage,
+  updateMessage,
+  analyzeMessage,
+  removeMessage,
+  getReplacements,
+  replaceMessage,
+} from '../../actions/app';
 
 import styles from './styles.js';
 
 import {
   GRAY,
   WHITE,
+  YELLOW,
+  LIGHT_GRAY,
+  PURPLE,
+  RED,
 } from '../../theme';
 
 let {
@@ -20,86 +42,308 @@ let {
 
 class Message extends React.Component{
 
-  static propTypes = {};
+  static propTypes = {
+    message: PropTypes.object.isRequired,
+    index: PropTypes.number,
+    editable: PropTypes.bool,
+    loading: PropTypes.bool,
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      text: null,
-      isEdit: true,
-      sentiment: null,
+      isEdit: false,
+      showReplacement: false,
+      match: null,
+      showDelete: false,
     };
   }
 
+  componentDidMount() {
+    if (this._textInput) {
+      this._textInput.focus();
+    }
+  }
+
   render() {
+    let message = this.props.message;
+
     return (
       <View style={styles.container}>
-        <View style={styles.stats}>
-          <View style={styles.circle}>
-          </View>
-
-        </View>
         <ScrollView
-          ref={(scrollView) => { this._scrollView = scrollView; }}
           style={styles.scrollView}
           keyboardShouldPersistTaps={false}
           keyboardDismissMode='interactive'
           onKeyboardWillHide={this._onKeyboardWillHide.bind(this)}
           onKeyboardWillShow={this._onKeyboardWillShow.bind(this)}
         >
-          {this.state.isEdit || (!this.state.isEdit && !this.state.text) ? this._renderTextInput() : this._renderText()}
+          <StatBarComponent
+            timestamp={message.timestamp}
+            sentiment={message.sentiment}
+            loading={this.props.loading}
+            isEdit={this.state.isEdit}
+          />
+          {this.state.isEdit || (!this.state.isEdit && !message.text) ? this._renderTextInput(message.text) : this._renderText(message)}
         </ScrollView>
-        {!this.state.isEdit ? this._renderButtons() : null}
+        {this.state.showReplacement ? this._renderReplacement() : null}
+        {this.state.showDelete ? this._renderDelete() : null}
+        {!this.state.isEdit && message.text && !this.props.loading ? this._renderButtons() : null}
       </View>
     );
   }
 
-  _renderTextInput() {
+  _renderTextInput(text) {
     return (
       <TextInput
+        ref={(textInput) => this._textInput = textInput}
         style={styles.textInput}
-        placeholder='Write something...'
-        ref='textInput'
+        placeholder={INPUT_DEFAULT}
         onChangeText={this._onChangeText.bind(this)}
-        value={this.state.text}
-        autoFocus={true}
+        value={text}
+        autoFocus={false}
         returnKeyType='default'
         blurOnSubmit={false}
         autoCorrect={true}
         multiline={true}
         placeholderTextColor={GRAY}
+        editable={this.props.editable}
       />
     );
   }
 
-  _renderText() {
+  _renderText(message) {
     return (
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>
-          {this.state.text}
-        </Text>
-      </View>
+      <WordsComponent
+        message={message}
+        onPress={this._onWordPress.bind(this)}
+      />
     );
   }
 
   _renderButtons() {
     return (
-      <View style={styles.buttonContainer}>
+      <ActionButtonComponent
+        onDelete={this._onSoftDelete.bind(this)}
+        onEdit={this._onEdit.bind(this)}
+        onSend={this._onSend.bind(this)}
+        onNew={this._onNew.bind(this)}
+      />
+    );
+  }
+
+  _renderReplacement() {
+    let match = this.state.match;
+
+    let score = Math.round(match.sentiment * 100);
+
+    let highlight = {
+      backgroundColor: RED,
+    };
+
+    if (score >= 75) {
+      highlight.backgroundColor = YELLOW;
+    } else if (score < 75 && score >= 50) {
+      highlight.backgroundColor = PURPLE;
+    }
+
+    let replacements = _.map(this.props.replacements, (replacement, key) => {
+      let replacementScore = Math.round(replacement.sentiment * 100);
+
+      let replacementHighlight = {
+        backgroundColor: RED,
+      };
+
+      if (replacementScore >= 75) {
+        replacementHighlight.backgroundColor = YELLOW;
+      } else if (replacementScore < 75 && replacementScore >= 50) {
+        replacementHighlight.backgroundColor = PURPLE;
+      }
+
+      return (
         <TouchableOpacity
-          onPress={this._onEdit.bind(this)}
+          key={key}
+          onPress={() => {
+            this._onReplacementPress(match, replacement);
+          }}
+          style={[styles.replacement, replacementHighlight]}
         >
-          <Text style={styles.button}>
-            Edit
+          <Text style={styles.replacementText}>
+            {replacement.text}
           </Text>
         </TouchableOpacity>
+      );
+    });
+
+    let notFound = (
+      <TouchableOpacity
+        onPress={this._onMatchPress.bind(this)}
+        style={[styles.replacement, {backgroundColor: GRAY}]}
+      >
+        <Text style={styles.replacementText}>
+          no alteratives
+        </Text>
+      </TouchableOpacity>
+    );
+
+    let remove = (
+      <TouchableOpacity
+        onPress={() => {
+          this._onReplacementPress(match, {text: ''});
+        }}
+        style={[styles.replacement, {backgroundColor: GRAY}]}
+      >
+        <Text style={styles.replacementText}>
+          remove word
+        </Text>
+      </TouchableOpacity>
+    );
+
+    return (
+      <View style={styles.replacementContainer}>
+        <TouchableOpacity
+          onPress={this._onMatchPress.bind(this)}
+          style={[styles.replacement, highlight]}
+        >
+          <Text style={styles.replacementText}>
+            {match.text}
+          </Text>
+        </TouchableOpacity>
+        <ScrollView
+          style={styles.replacementScrollView}
+        >
+          {!_.isEmpty(this.props.replacements) || this.props.loading ? replacements : notFound}
+        </ScrollView>
+        {!_.isEmpty(this.props.replacements) || !this.props.loading ? remove : null}
       </View>
     );
+  }
+
+  _renderDelete() {
+    return (
+      <View style={styles.deleteContainer}>
+        <View style={styles.deleteTitle}>
+          <Text style={styles.deleteText}>
+            delete message?
+          </Text>
+        </View>
+        <View style={styles.deleteButtons}>
+          <TouchableOpacity
+            onPress={this._onSoftDelete.bind(this)}
+            style={styles.deleteButton}
+          >
+            <Text style={styles.deleteText}>
+              no
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this._onDelete.bind(this)}
+            style={styles.deleteButton}
+          >
+            <Text style={styles.deleteText}>
+              yes
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
+  _onChangeText(text) {
+    this.props.dispatch(
+      updateMessage(text)
+    );
+  }
+
+  _onDelete() {
+    this.props.dispatch(removeMessage());
+    this.setState({
+      showDelete: !this.state.showDelete,
+    });
+  }
+
+  _onSoftDelete() {
+    this.setState({
+      showDelete: !this.state.showDelete,
+    });
   }
 
   _onEdit() {
     this.setState({
       isEdit: true
+    });
+
+    this._textInput.focus();
+  }
+
+  _onSend() {
+    RNMessageComposer.composeMessageWithArgs(
+      {
+        'messageText': this.props.message.text,
+      },
+      (result) => {
+        switch(result) {
+          case RNMessageComposer.Sent:
+            console.log('the message has been sent');
+            break;
+          case RNMessageComposer.Cancelled:
+            console.log('user cancelled sending the message');
+            break;
+          case RNMessageComposer.Failed:
+            console.log('failed to send the message');
+            break;
+          case RNMessageComposer.NotSupported:
+            console.log('this device does not support sending texts');
+            break;
+          default:
+            console.log('something unexpected happened');
+            break;
+        }
+      }
+    );
+  }
+
+  _onNew() {
+    this.props.dispatch(newMessage());
+  }
+
+  _onWordPress(match) {
+    this.props.dispatch(getReplacements(match.text));
+
+    this.setState({
+      showReplacement: true,
+      match: match,
+    });
+  }
+
+  _onMatchPress() {
+    this.setState({
+      showReplacement: false,
+      match: null,
+    });
+  }
+
+  _onReplacementPress(match, replacement) {
+
+    let text = this.props.message.text;
+
+    let message = text.split(/[ \t\r\n]/);
+    message = _.map(message, (word) => {
+      let check = word.split(match.text);
+
+      if (check.length > 1 || check === match.text) {
+        return (check[0] || '') + replacement.text + (check[1] || '');
+      } else {
+        return word;
+      }
+    }).join(' ');
+
+    this.props.dispatch(replaceMessage(message));
+    this.props.dispatch(analyzeMessage(message));
+
+    this.setState({
+      showReplacement: false,
+      match: null,
     });
   }
 
@@ -111,76 +355,21 @@ class Message extends React.Component{
 
   _onKeyboardWillHide() {
     this.setState({
-      isEdit: false
+      isEdit: false,
     });
 
-    if (this.state.text) {
-      this._getSentiment(this.state.text);
+    console.log(this.props.message.text, this.props.message.index === this.props.index);
+
+    if (this.props.message.text && this.props.message.index === this.props.index) {
+      this.props.dispatch(analyzeMessage(this.props.message.text));
     }
   }
-
-  _onChangeText(text) {
-    this.setState({
-      text: text
-    });
-  }
-
-  async _getSentiment(text) {
-
-    try {
-      let sentiment = await fetch('https://apiv2.indico.io/sentimenthq?key=8ca88bff5804bbf9e4aaf511a5c16a32', {
-        method: 'POST',
-        body: JSON.stringify({
-          data : text
-        }),
-      });
-
-      sentiment = JSON.parse(sentiment._bodyText).results;
-
-      this.setState({
-        sentiment: sentiment
-      });
-
-      let keywords = await fetch('https://apiv2.indico.io/keywords?key=8ca88bff5804bbf9e4aaf511a5c16a32&version=2&top_n=8', {
-        method: 'POST',
-        body: JSON.stringify({
-          data : text
-        }),
-      });
-
-      keywords = _.map(JSON.parse(keywords._bodyText).results, (value, key) => {
-        return key;
-      });
-
-      console.log(sentiment, keywords);
-
-      let kewordSentiment = await fetch('https://apiv2.indico.io/sentiment/batch?key=8ca88bff5804bbf9e4aaf511a5c16a32', {
-        method: 'POST',
-        body: JSON.stringify({
-          data : keywords
-        }),
-      });
-
-      kewordSentiment = JSON.parse(kewordSentiment._bodyText).results;
-
-      console.log(kewordSentiment);
-
-      // let thesaurus = await fetch(`http://words.bighugelabs.com/api/2/899ba2d37f3a99c8e40440e13a0c7d8f/${keywords[0]}/json`, {
-      //   method: 'GET',
-      // });
-
-      // console.log(JSON.parse(thesaurus._bodyText));
-
-    } catch (err) {
-      console.log('Error', err);
-    }
-
-  }
-
 }
 
 function select(state) {
-  return {};
+  return {
+    replacements: state.app.replacements,
+  };
 }
 
 export default connect(select)(Message);

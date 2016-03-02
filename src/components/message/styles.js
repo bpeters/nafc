@@ -7,6 +7,7 @@ import {
   X_OFFSET,
   SCREEN_HEIGHT,
   SCREEN_WIDTH,
+  LIGHT_GRAY,
 } from '../../theme';
 
 let {
@@ -20,58 +21,96 @@ let Styles = StyleSheet.create({
     height: SCREEN_HEIGHT,
     width: SCREEN_WIDTH,
   },
-  stats: {
-    top: Y_OFFSET,
-    left: X_OFFSET,
-    height: 60,
-    width: SCREEN_WIDTH - (X_OFFSET * 2),
-  },
-  chart: {
-    height: 60,
-    width: 60,
-  },
-  circle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'red',
-    transform: [
-      {scaleX: 2}
-    ]
-  },
-  triangle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'red'
-  },
   scrollView: {
     top: Y_OFFSET,
     left: X_OFFSET,
   },
   textInput: {
     fontSize: 26,
+    fontFamily: 'AvenirNext-Regular',
+    lineHeight: 36,
     height: SCREEN_HEIGHT - 320,
     width: SCREEN_WIDTH - (X_OFFSET * 2),
     color: BLACK,
   },
-  textContainer: {
-    width: SCREEN_WIDTH - (X_OFFSET * 2),
-  },
-  text: {
-    fontSize: 26,
-    color: BLACK,
-  },
   buttonContainer: {
-    height: 20,
+    height: 60,
     paddingTop: 1,
     width: SCREEN_WIDTH - (X_OFFSET * 2),
     left: X_OFFSET,
     marginBottom: Y_OFFSET,
     marginTop: Y_OFFSET,
+    flexDirection: 'row',
   },
   button: {
-    fontSize: 18,
+    marginTop: Y_OFFSET,
+    marginRight: 40,
+  },
+  buttonText: {
+    fontSize: 12,
+    letterSpacing: 2,
+    fontFamily: 'AvenirNext-Medium',
+  },
+  replacementContainer: {
+    top: 200,
+    left: X_OFFSET * 2,
+    position: 'absolute',
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    backgroundColor: 'transparent',
+  },
+  replacement: {
+    padding: 8,
+    width: SCREEN_WIDTH - (X_OFFSET * 4),
+    borderBottomColor: WHITE,
+    borderBottomWidth: 1,
+  },
+  replacementText: {
+    fontSize: 26,
+    fontFamily: 'AvenirNext-Regular',
+    color: WHITE,
+    textAlign: 'center',
+  },
+  replacementScrollView: {
+    height: 160,
+  },
+  deleteContainer: {
+    top: 200,
+    left: X_OFFSET * 2,
+    position: 'absolute',
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+  },
+  deleteTitle: {
+    padding: 16,
+    width: SCREEN_WIDTH - (X_OFFSET * 4),
+    backgroundColor: WHITE,
+    borderColor: LIGHT_GRAY,
+    borderWidth: 1,
+  },
+  deleteButtons: {
+    width: SCREEN_WIDTH - (X_OFFSET * 4),
+    flexDirection: 'row',
+  },
+  deleteButton: {
+    width: (SCREEN_WIDTH - (X_OFFSET * 4)) / 2,
+    padding: 8,
+    borderColor: LIGHT_GRAY,
+    borderWidth: 1,
+  },
+  deleteText: {
+    fontSize: 26,
+    fontFamily: 'AvenirNext-Regular',
+    color: BLACK,
+    textAlign: 'center',
   },
 });
 
