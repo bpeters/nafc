@@ -214,7 +214,7 @@ class Message extends React.Component{
         >
           {!_.isEmpty(this.props.replacements) || this.props.loading ? replacements : notFound}
         </ScrollView>
-        {!_.isEmpty(this.props.replacements) ? remove : null}
+        {!_.isEmpty(this.props.replacements) || !this.props.loading ? remove : null}
       </View>
     );
   }
